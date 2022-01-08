@@ -1,3 +1,4 @@
+// external imports
 const mongoose = require("mongoose");
 
 // model schema
