@@ -14,54 +14,54 @@ function getLogin(req, res, next) {
 // login
 async function login(req, res, next) {
   try {
-    // find user by mobile/email
+    // match user email/mobile data to db
     const user = await User.findOne({
       $or: [{ email: req.body.username }, { mobile: req.body.username }],
     });
 
     if (user && user._id) {
+      // check password validation
       const isValidPassword = await bcrypt.compare(
         req.body.password,
         user.password
       );
 
       if (isValidPassword) {
-        // prepare user object to generate token
+        // create user object to generate token
         const userObject = {
           userId: user._id,
-          username: user.name,
+          username: user.username,
           email: user.email,
           avatar: user.avatar || null,
           role: user.role || "user",
         };
 
-        // generate token
+        // generate token for cookies
         const token = jwt.sign(userObject, process.env.JWT_SECRET, {
           expiresIn: process.env.JWT_EXPIRY,
         });
 
-        // setCookie
+        // res cookies
         res.cookie(process.env.COOKIE_NAME, token, {
           maxAge: process.env.JWT_EXPIRY,
           httpOnly: true,
           signed: true,
         });
 
-        // set logged in user to local identifier
-        res.locals.loggedInUser = userObject;
+        // set logged in user to local variable
+        res.local.loggedInUser = userObject;
 
         // redirect to inbox page
         res.redirect("inbox");
       } else {
-        throw createError("Login failed! Please try again.");
+        throw createError("Login failed.Please try again");
       }
     } else {
-      throw createError("Login failed! Please try again.");
+      throw createError("Login failed.Please try again");
     }
   } catch (err) {
     res.render("login", {
       data: {
-        // keeping the input user field name
         username: req.body.username,
       },
       errors: {
