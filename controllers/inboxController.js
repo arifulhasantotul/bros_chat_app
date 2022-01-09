@@ -12,17 +12,124 @@ async function getInbox(req, res, next) {
   try {
     const conversations = await Conversation.find({
       $or: [
-        { creator_id: req.user.userId },
-        { participant_id: req.params.userId },
+        { "conversation.id": req.user.userId },
+        { "participant.id": req.user.userId },
       ],
     });
 
-    res.local.data = conversations;
+    // setting conversation data to res.local
+    res.locals.data = conversations;
+
+    // render inbox page
     res.render("inbox");
   } catch (err) {
     next(err);
   }
 }
 
+// search user
+async function searchUser(req, res, next) {
+  const user = req.body.user;
+  const searchQuery = user.replace("+88", "");
+
+  const name_search_query = new RegExp(escape(searchQuery), "i");
+  const mobile_search_query = new RegExp("^" + escape("+88" + searchQuery));
+  const email_search_query = new RegExp("^" + escape(searchQuery) + "$", "i");
+  try {
+    if (searchQuery !== "") {
+      const users = await User.find(
+        {
+          $or: [
+            {
+              name: name_search_query,
+            },
+            {
+              email: email_search_query,
+            },
+            {
+              mobile: mobile_search_query,
+            },
+          ],
+        },
+        "name avatar"
+      );
+
+      res.json(users);
+    } else {
+      throw createError("Please provide me some text to search!");
+    }
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: err.message,
+        },
+      },
+    });
+  }
+}
+
+// add conversation
+async function addConversation(req, res, next) {
+  try {
+    const newConversation = new Conversation({
+      creator: {
+        id: req.user.userId,
+        name: req.user.username,
+        avatar: req.user.avatar || null,
+      },
+      participant: {
+        id: req.user.userId,
+        name: req.user.username,
+        avatar: req.user.avatar || null,
+      },
+    });
+
+    const result = await newConversation.save();
+    res.status(200).json({
+      message: "Conversation added successfully!",
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: err.message,
+        },
+      },
+    });
+  }
+}
+
+// get messages of a conversation
+async function getMessages(req, res, next) {
+  try {
+    // filter message
+    const messages = await Message.find({
+      conversation_id: req.params.conversation_id,
+    }).sort("-createdAt");
+
+    // get participant
+    const { participant } = await Conversation.findById(
+      req.params.conversation_id
+    );
+    res.status(200).json({
+      data: {
+        messages: messages,
+        participant,
+      },
+      user: req.user.userId,
+      conversation_id: req.params.conversation_id,
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Unknown error occurred!",
+        },
+      },
+    });
+  }
+}
+
 // module exports
-module.exports = {};
+module.exports = { getInbox, searchUser, addConversation, getMessages };
