@@ -133,7 +133,7 @@ async function getMessages(req, res, next) {
 }
 
 // send new message
-async function newMessage(req, res, next) {
+async function sendMessage(req, res, next) {
   if (req.body.message || (req.files && req.files.length > 0)) {
     try {
       // save message text/attachment in database
@@ -204,4 +204,10 @@ async function newMessage(req, res, next) {
 }
 
 // module exports
-module.exports = { getInbox, searchUser, addConversation, getMessages };
+module.exports = {
+  getInbox,
+  searchUser,
+  addConversation,
+  getMessages,
+  sendMessage,
+};
