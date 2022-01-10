@@ -132,5 +132,76 @@ async function getMessages(req, res, next) {
   }
 }
 
+// send new message
+async function newMessage(req, res, next) {
+  if (req.body.message || (req.files && req.files.length > 0)) {
+    try {
+      // save message text/attachment in database
+      let attachments = null;
+
+      // check for file upload
+      if (req.files && req.files.length > 0) {
+        attachments = [];
+
+        req.files.forEach((file) => {
+          attachments.push(file.filename);
+        });
+      }
+
+      const newMessage = new Message({
+        text: req.body.message,
+        attachment: attachments,
+        sender: {
+          id: req.user.userId,
+          name: req.user.username,
+          avatar: req.user.avatar || null,
+        },
+        receiver: {
+          id: req.body.receiverId,
+          name: req.body.receiverName,
+          avatar: req.body.avatar || null,
+        },
+        conversation_id: req.body.conversationId,
+      });
+
+      const result = await newMessage.save();
+
+      // emit socket event
+      global.io.emit("new_message", {
+        message: {
+          conversation_id: req.body.conversationId,
+          sender: {
+            id: req.user.userId,
+            name: req.user.username,
+            avatar: req.user.avatar || null,
+          },
+          message: req.body.message,
+          attachment: attachments,
+          date_time: result.date_time,
+        },
+      });
+
+      res.status(200).json({
+        message: "Successful!",
+        data: result,
+      });
+    } catch (err) {
+      res.status(500).json({
+        errors: {
+          common: {
+            msg: err.message,
+          },
+        },
+      });
+    }
+  } else {
+    res.status(500).json({
+      errors: {
+        common: "message text or attachment is required!",
+      },
+    });
+  }
+}
+
 // module exports
 module.exports = { getInbox, searchUser, addConversation, getMessages };
