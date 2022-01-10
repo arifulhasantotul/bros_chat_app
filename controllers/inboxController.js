@@ -32,28 +32,29 @@ async function searchUser(req, res, next) {
   const user = req.body.user;
   const searchQuery = user.replace("+88", "");
 
-  const name_search_query = new RegExp(escape(searchQuery), "i");
-  const mobile_search_query = new RegExp("^" + escape("+88" + searchQuery));
-  const email_search_query = new RegExp("^" + escape(searchQuery) + "$", "i");
+  // using regex to create filter option
+  const name_search_regex = new RegExp(escape(searchQuery), "i");
+  const mobile_search_regex = new RegExp("^" + escape("+88" + searchQuery));
+  const email_search_regex = new RegExp("^" + escape(searchQuery) + "$", "i");
+
   try {
     if (searchQuery !== "") {
       const users = await User.find(
         {
           $or: [
             {
-              name: name_search_query,
+              name: name_search_regex,
             },
             {
-              email: email_search_query,
+              email: email_search_regex,
             },
             {
-              mobile: mobile_search_query,
+              mobile: mobile_search_regex,
             },
           ],
         },
         "name avatar"
       );
-
       res.json(users);
     } else {
       throw createError("Please provide me some text to search!");
@@ -79,9 +80,9 @@ async function addConversation(req, res, next) {
         avatar: req.user.avatar || null,
       },
       participant: {
-        id: req.user.userId,
-        name: req.user.username,
-        avatar: req.user.avatar || null,
+        id: req.body.id,
+        name: req.body.participant,
+        avatar: req.body.avatar || null,
       },
     });
 
