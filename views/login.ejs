@@ -15,13 +15,13 @@
           <input
             type="text"
             name="username"
-            placeholder="enter mobile or email"
+            placeholder="Enter mobile or email"
             value="<%= data.username %>"
           />
           <% if (errors.username) { %>
             <p class="error show"><%= errors.username.msg %></p>
           <% } %>
-          <input type="password" name="password" placeholder="enter password" />
+          <input type="password" name="password" placeholder="Enter password" />
           <% if (errors.password) { %>
             <p class="error show"><%= errors.password.msg %></p>
           <% } %>
@@ -35,22 +35,7 @@
     </div>
   </section>
   <!-- js -->
-  <script>
-    const arrow = document.querySelectorAll(".arrow");
-    for (let i = 0; i < arrow.length; i++) {
-      arrow[i].addEventListener("click", (e) => {
-        let arrowParent = e.target.parentElement.parentElement;
-        console.log(arrowParent);
-        arrowParent.classList.toggle("showMenu");
-      });
-    }
-
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarBtn = document.querySelector(".bx-menu");
-
-    sidebarBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("close");
-    });
-  </script>
+  <script src="./js/header.js"></script>
+  
 </body>
 </html>
