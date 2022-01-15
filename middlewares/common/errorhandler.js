@@ -12,7 +12,7 @@ function errorHandler(err, req, res, next) {
     process.env.NODE_ENV !== "production" ? err : { message: err.message };
   res.status(err.status || 500);
 
-  if (!res.locals.html) {
+  if (res.locals.html) {
     // html response
     res.render("error", {
       title: "Error page",
