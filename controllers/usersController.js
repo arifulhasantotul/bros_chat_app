@@ -27,7 +27,7 @@ async function addUser(req, res, next) {
   const hashedPassword = await hash(req.body.password, saltRound);
 
   // checking avatar/files
-  if (res.files && res.files.length > 0) {
+  if (req.files && req.files.length > 0) {
     newUser = new User({
       ...req.body,
       avatar: req.files[0].filename,
