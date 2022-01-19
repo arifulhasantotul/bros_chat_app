@@ -12,7 +12,7 @@ async function getInbox(req, res, next) {
   try {
     const conversations = await Conversation.find({
       $or: [
-        { "conversation.id": req.user.userId },
+        { "creator.id": req.user.userId },
         { "participant.id": req.user.userId },
       ],
     });

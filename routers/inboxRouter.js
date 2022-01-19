@@ -1,5 +1,7 @@
 // external imports
 const express = require("express");
+
+// internal imports
 const {
   getInbox,
   searchUser,
@@ -10,8 +12,6 @@ const {
 const { checkLogin } = require("../middlewares/common/checkLogin");
 const decorateHTMLResponse = require("../middlewares/common/decorateHTMLResponse");
 const attachmentUpload = require("../middlewares/Inbox/attachmentUpload");
-
-// internal imports
 
 const router = express.Router();
 
