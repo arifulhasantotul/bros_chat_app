@@ -49,7 +49,7 @@ async function login(req, res, next) {
         });
 
         // set logged in user to local variable
-        res.local.loggedInUser = userObject;
+        res.locals.loggedInUser = userObject;
 
         // redirect to inbox page
         res.redirect("inbox");
