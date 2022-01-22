@@ -9,10 +9,11 @@ const escape = require("../utilities/escape");
 // get inbox page
 async function getInbox(req, res, next) {
   try {
+    // userId is taking from checkLogin middle ware
     const conversations = await Conversation.find({
       $or: [
-        { "creator.id": req.user.userid },
-        { "participant.id": req.user.userid },
+        { "creator.id": req.user.userId },
+        { "participant.id": req.user.userId },
       ],
     });
     // setting conversation data to res.local
@@ -74,7 +75,7 @@ async function addConversation(req, res, next) {
   try {
     const newConversation = new Conversation({
       creator: {
-        id: req.user.userid,
+        id: req.user.userId,
         name: req.user.username,
         avatar: req.user.avatar || null,
       },
@@ -118,7 +119,7 @@ async function getMessages(req, res, next) {
         messages: messages,
         participant,
       },
-      user: req.user.userid,
+      user: req.user.userId,
       conversation_id: req.params.conversation_id,
     });
   } catch (err) {
@@ -152,7 +153,7 @@ async function sendMessage(req, res, next) {
         text: req.body.message,
         attachment: attachments,
         sender: {
-          id: req.user.userid,
+          id: req.user.userId,
           name: req.user.username,
           avatar: req.user.avatar || null,
         },
@@ -171,7 +172,7 @@ async function sendMessage(req, res, next) {
         message: {
           conversation_id: req.body.conversationId,
           sender: {
-            id: req.user.userid,
+            id: req.user.userId,
             name: req.user.username,
             avatar: req.user.avatar || null,
           },

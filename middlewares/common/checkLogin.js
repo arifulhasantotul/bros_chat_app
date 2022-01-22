@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const checkLogin = (req, res, next) => {
   // getting signedCookies from request
   let cookies =
-    Object.keys(req.signedCookies).length > 0 ? res.signedCookies : null;
+    Object.keys(req.signedCookies).length > 0 ? req.signedCookies : null;
 
   if (cookies) {
     try {
@@ -77,8 +77,4 @@ function requireRole(role) {
   };
 }
 
-module.exports = {
-  checkLogin,
-  redirectLoggedIn,
-  requireRole,
-};
+module.exports = { checkLogin, redirectLoggedIn, requireRole };

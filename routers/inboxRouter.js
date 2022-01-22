@@ -16,7 +16,7 @@ const attachmentUpload = require("../middlewares/Inbox/attachmentUpload");
 const router = express.Router();
 
 // inbox page
-router.get("/", decorateHTMLResponse("Inbox"), getInbox);
+router.get("/", decorateHTMLResponse("Inbox"), checkLogin, getInbox);
 
 // search user for conversation
 router.post("/search", checkLogin, searchUser);
