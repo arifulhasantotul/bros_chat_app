@@ -57,7 +57,9 @@
 
       <!-- send message form -->
       <form id="chat-form" method="post" enctype="multipart/form-data">
-        <label for="attachment"><img src="./images/attachment.png" alt="Add Attachment" /></label>
+        <label for="attachment">
+          <img src="./images/attachment.png" alt="Add Attachment" />
+        </label>
         <input type="file" multiple name="attachment" class="hide" id="attachment" />
         <input type="text" name="message" placeholder="Type a message" autocomplete="off" />
       </form>
@@ -119,7 +121,7 @@
             </div></div>`;
           }
 
-          // append the inoming message to message area as last item
+          // append the incoming message to message area as last item
           document.querySelector('#chat-message-list > .message-row:first-child').insertAdjacentHTML('beforeBegin', messageHTML);
         }
       });
@@ -203,6 +205,7 @@
         formData.append('avatar', participant.avatar || '');
         formData.append('conversationId', current_conversation_id);
 
+        console.log(formData);
         // send the request to server
         let response = await fetch("/inbox/message", {
           method: "POST",

@@ -1,5 +1,7 @@
 // external imports
 const express = require("express");
+
+// internal imports
 const { getUsers, addUser } = require("../controllers/usersController");
 const decorateHTMLResponse = require("../middlewares/common/decorateHTMLResponse");
 const avatarUpload = require("../middlewares/users/avatarUpload");

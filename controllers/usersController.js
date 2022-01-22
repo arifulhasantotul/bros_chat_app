@@ -44,7 +44,7 @@ async function addUser(req, res, next) {
     // save user
     const result = await newUser.save();
     res.status(200).json({
-      msg: "User added successfully!",
+      message: "User added successfully!",
     });
   } catch (err) {
     // send error
@@ -58,16 +58,19 @@ async function addUser(req, res, next) {
   }
 }
 
+// remove user
 async function removeUser(req, res, next) {
   try {
     const user = await User.findByIdAndDelete({ _id: req.params.id });
 
     // check user avatar file
     if (user.avatar) {
-      unlink(path.join(__dirname, `/../public/uploads/avatars/${user.avatar}`)),
+      unlink(
+        path.join(__dirname, `/../public/uploads/avatars/${user.avatar}`),
         (err) => {
           if (err) console.log(err);
-        };
+        }
+      );
     }
 
     res.status(200).json({

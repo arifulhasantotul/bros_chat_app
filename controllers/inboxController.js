@@ -1,5 +1,6 @@
 // external imports
 const createError = require("http-errors");
+
 // internal imports
 const User = require("../models/People");
 const Conversation = require("../models/Conversation");
@@ -9,7 +10,7 @@ const escape = require("../utilities/escape");
 // get inbox page
 async function getInbox(req, res, next) {
   try {
-    // userId is taking from checkLogin middle ware
+    // userId is taking from checkLogin middleware
     const conversations = await Conversation.find({
       $or: [
         { "creator.id": req.user.userId },
@@ -80,8 +81,8 @@ async function addConversation(req, res, next) {
         avatar: req.user.avatar || null,
       },
       participant: {
-        name: req.body.participant,
         id: req.body.id,
+        name: req.body.participant,
         avatar: req.body.avatar || null,
       },
     });

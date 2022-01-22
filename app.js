@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const path = require("path");
 const moment = require("moment");
 const http = require("http");
-const { Server } = require("socket.io");
 const cookieParser = require("cookie-parser");
 
 // internal imports
@@ -23,7 +22,7 @@ const server = http.createServer(app);
 const port = process.env.PORT || 5000;
 
 // socket server
-const io = new Server(server);
+const io = require("socket.io")(server);
 global.io = io; // adding socket io to global var
 
 // set moment as app locals

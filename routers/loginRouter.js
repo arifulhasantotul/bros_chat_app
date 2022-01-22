@@ -9,6 +9,7 @@ const {
   doLoginValidators,
   doLoginValidationHandler,
 } = require("../middlewares/login/loginValidators");
+
 const router = express.Router();
 
 // set page title
