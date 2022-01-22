@@ -1,6 +1,5 @@
 // external imports
 const createError = require("http-errors");
-
 // internal imports
 const User = require("../models/People");
 const Conversation = require("../models/Conversation");
@@ -12,11 +11,10 @@ async function getInbox(req, res, next) {
   try {
     const conversations = await Conversation.find({
       $or: [
-        { "creator.id": req.user.userId },
-        { "participant.id": req.user.userId },
+        { "creator.id": req.user.userid },
+        { "participant.id": req.user.userid },
       ],
     });
-
     // setting conversation data to res.local
     res.locals.data = conversations;
 
@@ -46,18 +44,19 @@ async function searchUser(req, res, next) {
               name: name_search_regex,
             },
             {
-              email: email_search_regex,
+              mobile: mobile_search_regex,
             },
             {
-              mobile: mobile_search_regex,
+              email: email_search_regex,
             },
           ],
         },
         "name avatar"
       );
+
       res.json(users);
     } else {
-      throw createError("Please provide me some text to search!");
+      throw createError("You must provide some text to search!");
     }
   } catch (err) {
     res.status(500).json({
@@ -75,20 +74,20 @@ async function addConversation(req, res, next) {
   try {
     const newConversation = new Conversation({
       creator: {
-        id: req.user.userId,
+        id: req.user.userid,
         name: req.user.username,
         avatar: req.user.avatar || null,
       },
       participant: {
-        id: req.body.id,
         name: req.body.participant,
+        id: req.body.id,
         avatar: req.body.avatar || null,
       },
     });
 
     const result = await newConversation.save();
     res.status(200).json({
-      message: "Conversation added successfully!",
+      message: "Conversation was added successfully!",
     });
   } catch (err) {
     res.status(500).json({
@@ -113,12 +112,13 @@ async function getMessages(req, res, next) {
     const { participant } = await Conversation.findById(
       req.params.conversation_id
     );
+
     res.status(200).json({
       data: {
         messages: messages,
         participant,
       },
-      user: req.user.userId,
+      user: req.user.userid,
       conversation_id: req.params.conversation_id,
     });
   } catch (err) {
@@ -152,7 +152,7 @@ async function sendMessage(req, res, next) {
         text: req.body.message,
         attachment: attachments,
         sender: {
-          id: req.user.userId,
+          id: req.user.userid,
           name: req.user.username,
           avatar: req.user.avatar || null,
         },
@@ -171,7 +171,7 @@ async function sendMessage(req, res, next) {
         message: {
           conversation_id: req.body.conversationId,
           sender: {
-            id: req.user.userId,
+            id: req.user.userid,
             name: req.user.username,
             avatar: req.user.avatar || null,
           },

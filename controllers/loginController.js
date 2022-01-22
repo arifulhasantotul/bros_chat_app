@@ -30,7 +30,7 @@ async function login(req, res, next) {
         // create user object to generate token
         const userObject = {
           userId: user._id,
-          username: user.username,
+          username: user.name,
           email: user.email,
           avatar: user.avatar || null,
           role: user.role || "user",
