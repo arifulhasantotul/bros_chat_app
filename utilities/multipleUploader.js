@@ -2,7 +2,6 @@
 const multer = require("multer");
 const path = require("path");
 const createError = require("http-errors");
-const { dirname } = require("path");
 
 const multipleUploader = (
   subfolder_name,
