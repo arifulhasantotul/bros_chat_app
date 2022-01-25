@@ -37,7 +37,7 @@
                 <td><%= user.email %></td>
                 <td><%= user.role %></td>
                 <td class="manage">
-                  <img src="./images/trash.png" alt="Delete" onclick="deleteUser('<%= user._id %>')"/>
+                  <img onclick="deleteUser('<%= user._id %>')" src="./images/trash.png" alt="Delete" onclick="deleteUser('<%= user._id %>')"/>
                 </td>
               </tr>
             <% }); %>

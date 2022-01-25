@@ -2,7 +2,12 @@
 const express = require("express");
 
 // internal imports
-const { getUsers, addUser } = require("../controllers/usersController");
+const {
+  getUsers,
+  addUser,
+  removeUser,
+} = require("../controllers/usersController");
+const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
 const decorateHTMLResponse = require("../middlewares/common/decorateHTMLResponse");
 const avatarUpload = require("../middlewares/users/avatarUpload");
 const {
@@ -14,17 +19,22 @@ const {
 
 const router = express.Router();
 
-// users page
-router.get("/", decorateHTMLResponse("Users"), getUsers);
+// GET: users page
+router.get("/", decorateHTMLResponse("Users"), checkLogin, getUsers);
 
-// add user
+// POST: add user
 router.post(
   "/",
+  checkLogin,
+  requireRole(["admin"]),
   avatarUpload,
   addUserValidators,
   addUserValidationHandler,
   addUser
 );
+
+// DELETE: remove user
+router.delete("/:id", checkLogin, requireRole(["admin"]), removeUser);
 
 // module export
 module.exports = router;

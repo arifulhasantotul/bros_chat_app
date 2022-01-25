@@ -15,10 +15,10 @@ const router = express.Router();
 // set page title
 const page_title = "Login";
 
-// login page
+// GET: login page
 router.get("/", decorateHTMLResponse(page_title), redirectLoggedIn, getLogin);
 
-// process login
+// POST: process login
 router.post(
   "/",
   decorateHTMLResponse(page_title),
@@ -27,7 +27,7 @@ router.post(
   login
 );
 
-// logout
+// DELETE: logout
 router.delete("/", logout);
 
 // module export
