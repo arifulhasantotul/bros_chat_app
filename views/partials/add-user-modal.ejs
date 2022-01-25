@@ -43,6 +43,12 @@
     duration: 1000,
   });
 
+  // failure toast 
+  const failureToast = Toastify({
+    text: "Sorry! Couldn't add user",
+    duration: 1000,
+  });
+
   function closeModal() {
     modal.style.display = "none";
   }
@@ -93,6 +99,7 @@
         // make all placeholders visible
         errorPlaceholder.style.display = "block";
       });
+      failureToast.showToast();
     } else {
       // success
       successToast.showToast();
