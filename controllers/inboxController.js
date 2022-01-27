@@ -210,7 +210,6 @@ async function sendMessage(req, res, next) {
 // remove attachments
 async function removeMsgAndAttachments(req, res, next) {
   try {
-    console.log(req.params.id);
     const message = await Message.findByIdAndDelete({ _id: req.params.id });
 
     // check attachment file
@@ -233,7 +232,52 @@ async function removeMsgAndAttachments(req, res, next) {
     res.status(500).json({
       errors: {
         common: {
-          msg: "Could not delete attachments!",
+          msg: "Could not delete message and attachments!",
+        },
+      },
+    });
+  }
+}
+
+// remove all messages
+async function removeMessages(req, res, next) {
+  try {
+    // total matched messages number
+    const messageCount = await Message.count({
+      conversation_id: req.params.id,
+    });
+
+    // matched delete all models
+    const message = await Message.deleteMany({
+      conversation_id: req.params.id,
+    });
+
+    // for (let i = messageCount; i >= 0; i--) {
+    //   // check attachment file
+    //   if (message.attachment) {
+    //     const attachments = message.attachment;
+    //     attachments.forEach((attachment) => {
+    //       fs.unlink(
+    //         path.join(
+    //           __dirname,
+    //           `/../public/uploads/attachments/${attachment}`
+    //         ),
+    //         (err) => {
+    //           if (err) console.log(err);
+    //         }
+    //       );
+    //     });
+    //   }
+    // }
+
+    res.status(200).json({
+      message: "All messages removed",
+    });
+  } catch {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Could not delete messages and attachments",
         },
       },
     });
@@ -248,4 +292,5 @@ module.exports = {
   getMessages,
   sendMessage,
   removeMsgAndAttachments,
+  removeMessages,
 };

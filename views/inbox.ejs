@@ -45,10 +45,13 @@
         <a href="#">+</a>
       </div>
 
+      <!-- conversation name & delete -->
+      <% data.forEach(function(conversation) { %>
       <div id="chat-title">
         <span id="conversation-partner"></span>
-        <img src="./images/trash.png" alt="Delete Conversation" />
+        <img src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
       </div>
+      <% }) %>
 
       <!-- placeholder div if no messages are in messages area -->
       <div id="chat-message-list">
@@ -88,7 +91,7 @@
 
       // handle new/live incoming message from socket
       socket.on("new_message", data => {
-        
+
         // only respond if current conversation is open in any client
         if(data.message.conversation_id == current_conversation_id) {
           // message class
@@ -265,6 +268,34 @@
           failedDeleteMessage.showToast();
         }
       
+      }
+
+      // conversation delete
+      async function deleteConversation(conversationId) {
+        console.log(conversationId);
+        // delete success toast
+        const successDeleteConversation = Toastify({
+          text: "Successfully deleted conversation",
+          duration: 1000
+        });
+
+        // delete failed toast
+        const failedDeleteConversation = Toastify({
+          text: "Couldn't delete conversation",
+          duration: 1000
+        });
+
+        let response = await fetch(`/inbox/conversation/${conversationId}`, {
+          method: "DELETE",
+        });
+
+        let result = await response.json();
+
+        if(!result.errors){
+          successDeleteConversation.showToast();
+        } else {
+          failedDeleteConversation.showToast();
+        }
       }
       
     </script>

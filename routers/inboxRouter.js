@@ -9,6 +9,7 @@ const {
   sendMessage,
   getMessages,
   removeMsgAndAttachments,
+  removeMessages,
 } = require("../controllers/inboxController");
 const { checkLogin } = require("../middlewares/common/checkLogin");
 const decorateHTMLResponse = require("../middlewares/common/decorateHTMLResponse");
@@ -33,6 +34,9 @@ router.post("/message", checkLogin, attachmentUpload, sendMessage);
 
 // DELETE: message
 router.delete("/msg/:id", checkLogin, removeMsgAndAttachments);
+
+// DELETE: conversation
+router.delete("/conversation/:id", checkLogin, removeMessages);
 
 // module export
 module.exports = router;
