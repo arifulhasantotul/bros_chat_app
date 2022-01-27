@@ -244,30 +244,42 @@
       // message delete
       async function deleteMessage(messageId){
         // delete success toast
-        const successDeleteMessage = Toastify({
-          text: "Successfully deleted message",
-          duration: 1000
-        });
+        const successDeleteMessage = () => Swal.fire(
+                                      'Deleted!',
+                                      'Message deleted.',
+                                      'success'
+                                    );
 
         // delete failed toast
-        const failedDeleteMessage = Toastify({
-          text: "Couldn't delete message",
-          duration: 1000
+        const failedDeleteMessage = () => Swal.fire(
+                                      'Sorry!',
+                                      "Couldn't delete message!",
+                                      'error'
+                                    );
+        Swal.fire({
+          title: 'Delete message?',
+          text: "Message will delete permanently!",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Delete'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            let response = await fetch(`/inbox/msg/${messageId}`, {
+              method: "DELETE",
+            });
+
+            let result = await response.json();
+
+            if(!result.errors){
+              successDeleteMessage();
+              document.getElementById(messageId).remove();
+            } else {
+              failedDeleteMessage();
+            }
+          }
         });
-
-        let response = await fetch(`/inbox/msg/${messageId}`, {
-          method: "DELETE",
-        });
-
-        let result = await response.json();
-
-        if(!result.errors){
-          successDeleteMessage.showToast();
-          document.getElementById(messageId).remove();
-        } else {
-          failedDeleteMessage.showToast();
-        }
-      
       }
 
       // conversation delete
