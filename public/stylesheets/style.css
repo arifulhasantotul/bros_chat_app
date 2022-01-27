@@ -688,9 +688,11 @@ input[type="submit"]:active {
 }
 
 .you-message .message-content {
+  position: relative;
   justify-items: end;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-column-gap: 15px;
+  margin-right: 10px;
 }
 
 .other-message {
@@ -723,6 +725,13 @@ input[type="submit"]:active {
   color: var(--dark);
   border: 2px solid var(--dark);
   border-radius: 14px 14px 0 14px;
+}
+
+.message-dlt img {
+  position: absolute;
+  width: 1.5rem;
+  cursor: pointer;
+  top: 15px;
 }
 
 .other-message .message-text {

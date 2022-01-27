@@ -1,5 +1,7 @@
 // external imports
 const createError = require("http-errors");
+const fs = require("fs");
+const path = require("path");
 
 // internal imports
 const User = require("../models/People");
@@ -205,11 +207,45 @@ async function sendMessage(req, res, next) {
   }
 }
 
-// module exports
+// remove attachments
+async function removeMsgAndAttachments(req, res, next) {
+  try {
+    console.log(req.params.id);
+    const message = await Message.findByIdAndDelete({ _id: req.params.id });
+
+    // check attachment file
+    if (message.attachment) {
+      const attachments = message.attachment;
+      attachments.forEach((attachment) => {
+        fs.unlink(
+          path.join(__dirname, `/../public/uploads/attachments/${attachment}`),
+          (err) => {
+            if (err) console.log(err);
+          }
+        );
+      });
+    }
+
+    res.status(200).json({
+      message: "Message removed Successfully!",
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Could not delete attachments!",
+        },
+      },
+    });
+  }
+}
+
+// exports functions
 module.exports = {
   getInbox,
   searchUser,
   addConversation,
   getMessages,
   sendMessage,
+  removeMsgAndAttachments,
 };

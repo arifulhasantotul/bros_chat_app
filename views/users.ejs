@@ -37,7 +37,7 @@
                 <td><%= user.email %></td>
                 <td><%= user.role %></td>
                 <td class="manage">
-                  <img onclick="deleteUser('<%= user._id %>')" src="./images/trash.png" alt="Delete" onclick="deleteUser('<%= user._id %>')"/>
+                  <img onclick="deleteUser('<%= user._id %>')" src="./images/trash.png" alt="Delete" />
                 </td>
               </tr>
             <% }); %>
@@ -51,13 +51,13 @@
   <script>
       // toasts
       const deleteToast = Toastify({
-          text: "User was deleted successfully!",
-          duration: 3000,
+          text: "User deleted successfully!",
+          duration: 1000,
       });
 
       const deleteErrorToast = Toastify({
           text: "Could not delete the user!",
-          duration: 3000,
+          duration: 1000,
       });
       
       // delete user function

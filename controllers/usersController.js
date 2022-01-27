@@ -86,5 +86,6 @@ async function removeUser(req, res, next) {
     });
   }
 }
-// exports module
+
+// exports functions
 module.exports = { getUsers, addUser, removeUser };
