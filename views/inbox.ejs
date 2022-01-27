@@ -47,10 +47,10 @@
 
       <!-- conversation name & delete -->
       <% data.forEach(function(conversation) { %>
-      <div id="chat-title">
-        <span id="conversation-partner"></span>
-        <img src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
-      </div>
+        <div id="chat-title">
+          <span id="conversation-partner"><%= conversation.participant.name %></span>
+          <img src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
+        </div>
       <% }) %>
 
       <!-- placeholder div if no messages are in messages area -->
@@ -293,6 +293,11 @@
 
         if(!result.errors){
           successDeleteConversation.showToast();
+          
+          // reloading page
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
         } else {
           failedDeleteConversation.showToast();
         }

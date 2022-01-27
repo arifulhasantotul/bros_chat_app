@@ -270,14 +270,35 @@ async function removeMessages(req, res, next) {
     //   }
     // }
 
-    res.status(200).json({
-      message: "All messages removed",
-    });
+    // res.status(200).json({
+    //   message: "All messages removed",
+    // });
+
+    next();
   } catch {
     res.status(500).json({
       errors: {
         common: {
           msg: "Could not delete messages and attachments",
+        },
+      },
+    });
+  }
+}
+
+async function removeConversation(req, res, next) {
+  try {
+    const conversation = await Conversation.findByIdAndDelete({
+      _id: req.params.id,
+    });
+    res.status(200).json({
+      message: "Conversation deleted successfully!",
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Could not delete conversation",
         },
       },
     });
@@ -293,4 +314,5 @@ module.exports = {
   sendMessage,
   removeMsgAndAttachments,
   removeMessages,
+  removeConversation,
 };
