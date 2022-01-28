@@ -87,48 +87,48 @@
       let current_conversation_id; // selected conversation id
 
       // delete success toast
-        const successDeleteToast = (topic) => {
-          Swal.fire({
-            toast: true,
-            position: "top-end",
-            title: "Deleted !",
-            text: `${topic} has been deleted.`,
-            icon: "success",
-            color: "#fff",
-            background: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+      const successDeleteToast = (topic) => {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          title: "Deleted !",
+          text: `${topic} has been deleted.`,
+          icon: "success",
+          color: "#fff",
+          background: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
 
-        // delete cancel toast 
-        const cancelDeleteToast = ()=>{
-          Swal.fire({
-            toast: true,
-            position: "top-end",
-            title: "Cancelled !",
-            text: "Operation cancelled",
-            icon: "info",
-            background: "linear-gradient(to right, #f9d423 0%, #ff4e50 100%)",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+      // delete cancel toast 
+      const cancelDeleteToast = ()=>{
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          title: "Cancelled !",
+          text: "Operation cancelled",
+          icon: "info",
+          background: "linear-gradient(to right, #f9d423 0%, #ff4e50 100%)",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
 
-        // delete failed toast
-        const failedDeleteToast = (topic) =>{
-          Swal.fire({
-            toast: true,
-            position: "top-end",
-            title: "Error !",
-            text: `Couldn't delete ${topic}!`,
-            icon: "error",
-            color: "#fff",
-            background: "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%)",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+      // delete failed toast
+      const failedToast = (text) =>{
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          title: "Error !",
+          text: text,
+          icon: "error",
+          color: "#fff",
+          background: "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%)",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
 
       // socket initialization
       const socket = io('<%= process.env.APP_URL %>');
@@ -187,12 +187,6 @@
       // get messages of a conversation
       async function getMessages(conversation_id, current_conversation_name){
 
-        // messages failure toast
-        const messagesFailureToast = Toastify({
-          text: "Error loading messages!",
-          duration: 1000,
-        });
-
         let response = await fetch(`/inbox/messages/${conversation_id}`);
         const result= await response.json();
 
@@ -249,18 +243,13 @@
               chatTitleContainer.textContent = current_conversation_name;
             }
         } else {
-          messagesFailureToast.showToast();
+          failedToast("Error loading messages!");
         }
     }
 
       // message sending
       form.onsubmit = async function (event) {
         event.preventDefault();
-
-        const sendMessageFailureToast = Toastify({
-          text: "Error sending message",
-          duration: 1000,
-        });
 
         // prepare the form data
         const formData = new FormData(form);
@@ -281,7 +270,7 @@
         if (!result.errors) {
           form.reset(); // reset the form
         } else {
-          sendMessageFailureToast.showToast();
+          failedToast("Error sending messages!");
         }
       }
 
@@ -312,7 +301,7 @@
               successDeleteToast("Message");
               document.getElementById(messageId).remove();
             } else {
-              failedDeleteToast("message");
+              failedToast(`Couldn't delete message !`);
             }
           } else {
             cancelDeleteToast();
@@ -322,34 +311,40 @@
 
       // conversation delete
       async function deleteConversation(conversationId) {
-        // delete success toast
-        const successDeleteConversation = Toastify({
-          text: "Successfully deleted conversation",
-          duration: 1000
+        
+        // trigger confirm popup
+        Swal.fire({
+          title: 'Delete conversation?',
+          text: "Conversation will delete permanently!",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#2ecc71',
+          cancelButtonColor: '#ff4757',
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Keep',
+          color: '#fff',
+          background: 'linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            let response = await fetch(`/inbox/conversation/${conversationId}`, {
+              method: "DELETE",
+            });
+
+            let result = await response.json();
+
+            if(!result.errors){
+              successDeleteToast("Conversation");
+              // reloading page
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            } else {
+              failedToast("Couldn't delete conversation");
+            }
+          } else {
+            cancelDeleteToast();
+          }
         });
-
-        // delete failed toast
-        const failedDeleteConversation = Toastify({
-          text: "Couldn't delete conversation",
-          duration: 1000
-        });
-
-        let response = await fetch(`/inbox/conversation/${conversationId}`, {
-          method: "DELETE",
-        });
-
-        let result = await response.json();
-
-        if(!result.errors){
-          successDeleteConversation.showToast();
-          
-          // reloading page
-          setTimeout(() => {
-            location.reload();
-          }, 1000);
-        } else {
-          failedDeleteConversation.showToast();
-        }
       }
       
     </script>
