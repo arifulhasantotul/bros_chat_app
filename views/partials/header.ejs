@@ -110,16 +110,26 @@
     <!-- js -->
     <script>
       // toast 
-      const logoutToast = Toastify({
-        text: "You are being logged out....",
-        duration: 1000,
-      });
+      // delete success toast
+      const logoutToast = () => {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          title: "Successful !",
+          text: `You are being logged out...`,
+          icon: "success",
+          color: "#fff",
+          background: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
 
       function logout(){
         fetch("/", {
           method: "DELETE",
         });
-        logoutToast.showToast();
+        logoutToast();
         setTimeout(()=>{
           window.location.replace("/");
         }, 1000);

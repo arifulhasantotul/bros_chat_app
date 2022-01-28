@@ -207,6 +207,7 @@
                   let senderAvatar = message.sender.avatar ? `./uploads/avatars/${message.sender.avatar}` : './images/nophoto.png';
                   const messageClass = message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
                   const showAvatar = message.sender.id === loggedinUserId ? '' : `<img src="${senderAvatar}" alt="${message.sender.name}" />`;
+                  const showTrashIcon = message.sender.id === loggedinUserId ? 'message-dlt' : 'message-dlt hide';
 
                   // message attachments
                   let attachments = '<div class="attachments">';
@@ -225,7 +226,7 @@
                     <div class="message-content">
                       ${showAvatar}
                       <div class="message-text">${message.text}</div>
-                      <div class="message-dlt">
+                      <div class="${showTrashIcon}">
                         <img onclick="deleteMessage('${message._id}')" src="./images/trash.png" alt="Delete" />
                       </div>
                       ${attachments}

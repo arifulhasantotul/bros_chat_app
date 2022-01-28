@@ -734,6 +734,10 @@ input[type="submit"]:active {
   top: 15px;
 }
 
+.message-dlt.hide {
+  display: none;
+}
+
 .other-message .message-text {
   background: var(--blue);
   color: #111;
