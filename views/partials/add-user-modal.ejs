@@ -33,21 +33,42 @@
     </div>
   </div>
 </div>
+
+
 <script>
   const modal = document.querySelector("#add-user-modal");
   const form = document.querySelector("#add-user-form");
 
+  
   // success toast
-  const successToast = Toastify({
-    text: "User was added successfully! Reloading the list...",
-    duration: 1000,
-  });
+  const successAddUserToast = () => {
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      title: "Successful !",
+      text: "User was added successfully! Reloading the list...",
+      icon: "success",
+      color: "#fff",
+      background: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
 
-  // failure toast 
-  const failureToast = Toastify({
-    text: "Sorry! Couldn't add user",
-    duration: 1000,
-  });
+  // failed toast
+  const failedAddUserToast = () =>{
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      title: "Error !",
+      text: "Oops, sorry! Couldn't add user",
+      icon: "error",
+      color: "#fff",
+      background: "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%)",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
 
   function closeModal() {
     modal.style.display = "none";
@@ -99,10 +120,10 @@
         // make all placeholders visible
         errorPlaceholder.style.display = "block";
       });
-      failureToast.showToast();
+      failedAddUserToast();
     } else {
       // success
-      successToast.showToast();
+      successAddUserToast();
       closeModal();
       document.querySelector("p.error").style.display = "none";
 
