@@ -1,3 +1,11 @@
+/*
+ * Title: Project Login Control
+ * Description: Handling login controller functions
+ * Author: MD ARIFUL HASAN
+ * Date: 20/01/2022
+ *
+ */
+
 // external imports
 const bcrypt = require("bcrypt");
 const createError = require("http-errors");
@@ -33,7 +41,7 @@ async function login(req, res, next) {
           username: user.name,
           email: user.email,
           avatar: user.avatar || null,
-          role: user.role || "user",
+          role: user.role || "User",
         };
 
         // generate token for cookies

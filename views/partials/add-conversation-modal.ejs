@@ -1,3 +1,10 @@
+<!-- 
+ * Title: Project Modal File
+ * Description: EJS add conversation modal file
+ * Author: MD ARIFUL HASAN
+ * Date: 21/01/2022
+-->
+
 <div class="modal-wrapper" id="add-conversation-modal">
   <div class="modal">
     <a onclick="closeModal()" class="modal-close">+</a>
@@ -29,12 +36,20 @@
   const conversation_list = document.querySelector("#conversation-list");
   let users_placeholder = document.querySelector(".search_users");
 
-  // conversation created failure toast
-  const conversationFailureToast = Toastify({
-    text: "Error creating a conversation!",
-    duration: 1000,
-  });
-
+  // conversation create failed toast
+  const conversationFailureToast = () =>{
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      title: "Error !",
+      text: "Error creating a conversation!",
+      icon: "error",
+      color: "#fff",
+      background: "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%)",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
   function closeModal() {
     modal.style.display = "none";
     // reset
@@ -134,7 +149,7 @@
         throw new Error(result.errors.common.msg);
       }
     } catch (err) {
-      conversationFailureToast.showToast();
+      conversationFailureToast();
     }
   }
 </script>

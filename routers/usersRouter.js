@@ -1,3 +1,11 @@
+/*
+ * Title: Project User Router
+ * Description: Handling user routing
+ * Author: MD ARIFUL HASAN
+ * Date: 21/01/2022
+ *
+ */
+
 // external imports
 const express = require("express");
 
@@ -26,7 +34,7 @@ router.get("/", decorateHTMLResponse("Users"), checkLogin, getUsers);
 router.post(
   "/",
   checkLogin,
-  requireRole(["admin"]),
+  requireRole(["Admin"]),
   avatarUpload,
   addUserValidators,
   addUserValidationHandler,
@@ -34,7 +42,7 @@ router.post(
 );
 
 // DELETE: remove user
-router.delete("/:id", checkLogin, requireRole(["admin"]), removeUser);
+router.delete("/:id", checkLogin, requireRole(["Admin"]), removeUser);
 
 // module export
 module.exports = router;

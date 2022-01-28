@@ -1024,15 +1024,3 @@ img.conversation-dlt:hover {
     text-align: left;
   }
 }
-
-/* styles related to toastify */
-.toastify {
-  color: var(--secondary);
-  font-size: 14px !important;
-  background: -webkit-linear-gradient(
-    to right,
-    var(--green) 0%,
-    var(--blue) 100%
-  );
-  background: linear-gradient(to right, var(--green) 0%, var(--blue) 100%);
-}

@@ -1,3 +1,11 @@
+/*
+ * Title: Project Inbox Control
+ * Description: Handling all inbox controller function
+ * Author: MD ARIFUL HASAN
+ * Date: 24/01/2022
+ *
+ */
+
 // external imports
 const createError = require("http-errors");
 const fs = require("fs");

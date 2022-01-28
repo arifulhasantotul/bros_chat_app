@@ -1,3 +1,11 @@
+/*
+ * Title: Project Inbox Router
+ * Description: Handling inbox routing
+ * Author: MD ARIFUL HASAN
+ * Date: 23/01/2022
+ *
+ */
+
 // external imports
 const express = require("express");
 

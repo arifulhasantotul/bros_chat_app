@@ -1,3 +1,11 @@
+/*
+ * Title: Project User Control
+ * Description: Handling all user controller function
+ * Author: MD ARIFUL HASAN
+ * Date: 22/01/2022
+ *
+ */
+
 // external imports
 const { hash } = require("bcrypt");
 const { unlink } = require("fs");
