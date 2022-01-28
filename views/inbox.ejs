@@ -21,6 +21,7 @@
               <% } %>
               <div class="title-text"><%= conversation.participant.name %></div>
               <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
+              <img class="conversation-dlt" src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
             </div>
           <% } else { %>
             <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.creator.name %>')">
@@ -31,6 +32,7 @@
               <% } %>
               <div class="title-text"><%= conversation.creator.name %></div>
               <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
+              <img class="conversation-dlt" src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
             </div>
           <% } %>
         <% }); %>
@@ -46,12 +48,9 @@
       </div>
 
       <!-- conversation name & delete -->
-      <% data.forEach(function(conversation) { %>
-        <div id="chat-title">
-          <span id="conversation-partner"><%= conversation.participant.name %></span>
-          <img src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
-        </div>
-      <% }) %>
+      <div id="chat-title">
+        <span id="conversation-partner"></span>
+      </div>
 
       <!-- placeholder div if no messages are in messages area -->
       <div id="chat-message-list">
@@ -186,7 +185,7 @@
 
       // get messages of a conversation
       async function getMessages(conversation_id, current_conversation_name){
-
+        console.log(conversation_id, current_conversation_name);
         let response = await fetch(`/inbox/messages/${conversation_id}`);
         const result= await response.json();
 

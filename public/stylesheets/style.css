@@ -567,6 +567,7 @@ input[type="submit"]:active {
   font-size: 1.3rem;
   border-bottom: 2px solid var(--dark);
   padding: 20px 20px 20px 15px;
+  position: relative;
 }
 
 .conversation.active,
@@ -578,7 +579,7 @@ input[type="submit"]:active {
   cursor: pointer;
 }
 
-.conversation > img {
+.conversation img {
   grid-row: span 2;
   width: 40px;
   height: 40px;
@@ -607,6 +608,20 @@ input[type="submit"]:active {
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
+}
+
+img.conversation-dlt {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  right: 10px;
+  top: 20px;
+}
+
+img.conversation-dlt:hover {
+  transform: translateY(3px) scale(1.05);
+  transition: all 0.3s linear;
 }
 
 .new-message-container {
