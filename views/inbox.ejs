@@ -54,7 +54,7 @@
 
       <!-- placeholder div if no messages are in messages area -->
       <div id="chat-message-list">
-        <div class="nothing">select a conversation</div>
+        <div class="nothing">Select a conversation</div>
       </div>
 
       <!-- send message form -->
@@ -68,286 +68,287 @@
 
     </div>
     <%- include('./partials/add-conversation-modal.ejs'); %>
-</section>
-    <!-- import socket io client from cdn -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+  </section>
+  
+  <!-- import socket io client from cdn -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
 
-    <!-- header js -->
-    <script src="./js/header.js"></script>
+  <!-- header js -->
+  <script src="./js/header.js"></script>
 
-    <script>
+  <script>
 
-      const form = document.querySelector('#chat-form');
-      const messageContainer = document.querySelector('#chat-message-list');
-      const chatTitleContainer = document.querySelector('#conversation-partner');
-      const loggedinUserId = '<%= loggedInUser.userId %>';
-      const loggedinUserName = '<%= loggedInUser.username %>';
-      let participant = null; // selected conversation participant object
-      let current_conversation_id; // selected conversation id
+    const form = document.querySelector('#chat-form');
+    const messageContainer = document.querySelector('#chat-message-list');
+    const chatTitleContainer = document.querySelector('#conversation-partner');
+    const loggedinUserId = '<%= loggedInUser.userId %>';
+    const loggedinUserName = '<%= loggedInUser.username %>';
+    let participant = null; // selected conversation participant object
+    let current_conversation_id; // selected conversation id
 
-      // delete success toast
-      const successDeleteToast = (topic) => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          title: "Deleted !",
-          text: `${topic} has been deleted.`,
-          icon: "success",
-          color: "#fff",
-          background: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-
-      // delete cancel toast 
-      const cancelDeleteToast = ()=>{
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          title: "Cancelled !",
-          text: "Operation cancelled",
-          icon: "info",
-          background: "linear-gradient(to right, #f9d423 0%, #ff4e50 100%)",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-
-      // delete failed toast
-      const failedToast = (text) =>{
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          title: "Error !",
-          text: text,
-          icon: "error",
-          color: "#fff",
-          background: "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%)",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-
-      // socket initialization
-      const socket = io('<%= process.env.APP_URL %>');
-
-      // handle new/live incoming message from socket
-      socket.on("new_message", data => {
-
-        // only respond if current conversation is open in any client
-        if(data.message.conversation_id == current_conversation_id) {
-          // message class
-          const messageClass = data.message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
-          
-          // sender avatar
-          const senderAvatar = data.message.sender.avatar ? `<img src="./uploads/avatars/${data.message.sender.avatar}" alt="${data.message.sender.name}" />` : `<img src="./images/nophoto.png" alt="${data.message.sender.name}" />`;
-
-          // message attachments
-          let attachments = '<div class="attachments">';
-
-          if(data.message.attachment && data.message.attachment.length > 0) {
-            data.message.attachment.forEach(attachment => {
-              attachments += `<img src="./uploads/attachments/${attachment}" /> `;
-            });
-          }
-
-          attachments += '</div>';
-
-          let messageHTML;
-
-          // do not show avatar for loggedin user
-          if(data.message.sender.id == loggedinUserId) {
-            messageHTML = 
-            `<div class="message-row ${messageClass}">
-              <div class="message-content">
-                <div class="message-text">${data.message.message}</div>
-                ${attachments}
-                <div class="message-time">${moment(data.message.date_time).fromNow()}</div>
-              </div>
-            </div>`;
-          } else {
-            messageHTML = 
-            `<div class="message-row ${messageClass}">
-              <div class="message-content">
-                ${senderAvatar}
-                <div class="message-text">${data.message.message}</div>
-                ${attachments}
-                <div class="message-time">${moment(data.message.date_time).fromNow()}</div>
-              </div>
-            </div>`;
-          }
-
-          // append the incoming message to message area as last item
-          document.querySelector('#chat-message-list > .message-row:first-child').insertAdjacentHTML('beforeBegin', messageHTML);
-        }
+    // delete success toast
+    const successDeleteToast = (topic) => {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: "Deleted !",
+        text: `${topic} has been deleted.`,
+        icon: "success",
+        color: "#fff",
+        background: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
+        showConfirmButton: false,
+        timer: 1500,
       });
-
-      // get messages of a conversation
-      async function getMessages(conversation_id, current_conversation_name){
-        console.log(conversation_id, current_conversation_name);
-        let response = await fetch(`/inbox/messages/${conversation_id}`);
-        const result= await response.json();
-
-        if(!result.errors && result.data) {
-            form.style.visibility = 'visible';
-            
-            const {data, user, conversation_id} = result;
-
-            participant = data.participant;
-            current_conversation_id = conversation_id;
-
-            if(data.messages) {
-
-              let allMessages = '';
-
-              if(data.messages.length > 0) {
-                data.messages.forEach((message) => {
-                  let senderAvatar = message.sender.avatar ? `./uploads/avatars/${message.sender.avatar}` : './images/nophoto.png';
-                  const messageClass = message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
-                  const showAvatar = message.sender.id === loggedinUserId ? '' : `<img src="${senderAvatar}" alt="${message.sender.name}" />`;
-                  const showTrashIcon = message.sender.id === loggedinUserId ? 'message-dlt' : 'message-dlt hide';
-
-                  // message attachments
-                  let attachments = '<div class="attachments">';
-
-                  if(message.attachment && message.attachment.length > 0) {
-                    message.attachment.forEach(attachment => {
-                      attachments += `<img src="./uploads/attachments/${attachment}" /> `;
-                    });
-                  }
-
-                  attachments += '</div>';
-
-                  // final message html
-                  let messageHTML = 
-                  `<div id="${message._id}" class="message-row ${messageClass}">
-                    <div class="message-content">
-                      ${showAvatar}
-                      <div class="message-text">${message.text}</div>
-                      <div class="${showTrashIcon}">
-                        <img onclick="deleteMessage('${message._id}')" src="./images/trash.png" alt="Delete" />
-                      </div>
-                      ${attachments}
-                      <div class="message-time">${moment(message.date_time).fromNow()}</div>
-                    </div>
-                  </div>`;
-
-                  allMessages += messageHTML;
-                  messageContainer.innerHTML = allMessages;
-                });
-              } else if(data.messages.length === 0) {
-                messageContainer.innerHTML = '<div class="message-row"></div>';
-              }
-
-              chatTitleContainer.textContent = current_conversation_name;
-            }
-        } else {
-          failedToast("Error loading messages!");
-        }
     }
 
-      // message sending
-      form.onsubmit = async function (event) {
-        event.preventDefault();
+    // delete cancel toast 
+    const cancelDeleteToast = ()=>{
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: "Cancelled !",
+        text: "Operation cancelled",
+        icon: "info",
+        background: "linear-gradient(to right, #f9d423 0%, #ff4e50 100%)",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
 
-        // prepare the form data
-        const formData = new FormData(form);
-        formData.append('receiverId', participant.id);
-        formData.append('receiverName', participant.name);
-        formData.append('avatar', participant.avatar || '');
-        formData.append('conversationId', current_conversation_id);
+    // delete failed toast
+    const failedToast = (text) =>{
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: "Error !",
+        text: text,
+        icon: "error",
+        color: "#fff",
+        background: "linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%)",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
 
-        // send the request to server
-        let response = await fetch("/inbox/message", {
-          method: "POST",
-          body: formData,
-        });
+    // socket initialization
+    const socket = io('<%= process.env.APP_URL %>');
 
-        // get response
-        let result = await response.json();
+    // handle new/live incoming message from socket
+    socket.on("new_message", data => {
 
-        if (!result.errors) {
-          form.reset(); // reset the form
-        } else {
-          failedToast("Error sending messages!");
-        }
-      }
-
-      // message delete
-      async function deleteMessage(messageId){
-
-        // trigger confirm popup
-        Swal.fire({
-          title: 'Delete message?',
-          text: "Message will delete permanently!",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#2ecc71',
-          cancelButtonColor: '#ff4757',
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Keep',
-          color: '#fff',
-          background: 'linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)'
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            let response = await fetch(`/inbox/msg/${messageId}`, {
-              method: "DELETE",
-            });
-
-            let result = await response.json();
-
-            if(!result.errors){
-              successDeleteToast("Message");
-              document.getElementById(messageId).remove();
-            } else {
-              failedToast(`Couldn't delete message !`);
-            }
-          } else {
-            cancelDeleteToast();
-          }
-        });
-      }
-
-      // conversation delete
-      async function deleteConversation(conversationId) {
+      // only respond if current conversation is open in any client
+      if(data.message.conversation_id == current_conversation_id) {
+        // message class
+        const messageClass = data.message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
         
-        // trigger confirm popup
-        Swal.fire({
-          title: 'Delete conversation?',
-          text: "Conversation will delete permanently!",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#2ecc71',
-          cancelButtonColor: '#ff4757',
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Keep',
-          color: '#fff',
-          background: 'linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)'
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            let response = await fetch(`/inbox/conversation/${conversationId}`, {
-              method: "DELETE",
-            });
+        // sender avatar
+        const senderAvatar = data.message.sender.avatar ? `<img src="./uploads/avatars/${data.message.sender.avatar}" alt="${data.message.sender.name}" />` : `<img src="./images/nophoto.png" alt="${data.message.sender.name}" />`;
 
-            let result = await response.json();
+        // message attachments
+        let attachments = '<div class="attachments">';
 
-            if(!result.errors){
-              successDeleteToast("Conversation");
-              // reloading page
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
-            } else {
-              failedToast("Couldn't delete conversation");
-            }
-          } else {
-            cancelDeleteToast();
-          }
-        });
+        if(data.message.attachment && data.message.attachment.length > 0) {
+          data.message.attachment.forEach(attachment => {
+            attachments += `<img src="./uploads/attachments/${attachment}" /> `;
+          });
+        }
+
+        attachments += '</div>';
+
+        let messageHTML;
+
+        // do not show avatar for loggedin user
+        if(data.message.sender.id == loggedinUserId) {
+          messageHTML = 
+          `<div class="message-row ${messageClass}">
+            <div class="message-content">
+              <div class="message-text">${data.message.message}</div>
+              ${attachments}
+              <div class="message-time">${moment(data.message.date_time).fromNow()}</div>
+            </div>
+          </div>`;
+        } else {
+          messageHTML = 
+          `<div class="message-row ${messageClass}">
+            <div class="message-content">
+              ${senderAvatar}
+              <div class="message-text">${data.message.message}</div>
+              ${attachments}
+              <div class="message-time">${moment(data.message.date_time).fromNow()}</div>
+            </div>
+          </div>`;
+        }
+
+        // append the incoming message to message area as last item
+        document.querySelector('#chat-message-list > .message-row:first-child').insertAdjacentHTML('beforeBegin', messageHTML);
       }
+    });
+
+    // get messages of a conversation
+    async function getMessages(conversation_id, current_conversation_name){
+      console.log(conversation_id, current_conversation_name);
+      let response = await fetch(`/inbox/messages/${conversation_id}`);
+      const result= await response.json();
+
+      if(!result.errors && result.data) {
+          form.style.visibility = 'visible';
+          
+          const {data, user, conversation_id} = result;
+
+          participant = data.participant;
+          current_conversation_id = conversation_id;
+
+          if(data.messages) {
+
+            let allMessages = '';
+
+            if(data.messages.length > 0) {
+              data.messages.forEach((message) => {
+                let senderAvatar = message.sender.avatar ? `./uploads/avatars/${message.sender.avatar}` : './images/nophoto.png';
+                const messageClass = message.sender.id === loggedinUserId ? 'you-message' : 'other-message';
+                const showAvatar = message.sender.id === loggedinUserId ? '' : `<img src="${senderAvatar}" alt="${message.sender.name}" />`;
+                const showTrashIcon = message.sender.id === loggedinUserId ? 'message-dlt' : 'message-dlt hide';
+
+                // message attachments
+                let attachments = '<div class="attachments">';
+
+                if(message.attachment && message.attachment.length > 0) {
+                  message.attachment.forEach(attachment => {
+                    attachments += `<img src="./uploads/attachments/${attachment}" /> `;
+                  });
+                }
+
+                attachments += '</div>';
+
+                // final message html
+                let messageHTML = 
+                `<div id="${message._id}" class="message-row ${messageClass}">
+                  <div class="message-content">
+                    ${showAvatar}
+                    <div class="message-text">${message.text}</div>
+                    <div class="${showTrashIcon}">
+                      <img onclick="deleteMessage('${message._id}')" src="./images/trash.png" alt="Delete" />
+                    </div>
+                    ${attachments}
+                    <div class="message-time">${moment(message.date_time).fromNow()}</div>
+                  </div>
+                </div>`;
+
+                allMessages += messageHTML;
+                messageContainer.innerHTML = allMessages;
+              });
+            } else if(data.messages.length === 0) {
+              messageContainer.innerHTML = '<div class="message-row"></div>';
+            }
+
+            chatTitleContainer.textContent = current_conversation_name;
+          }
+      } else {
+        failedToast("Error loading messages!");
+      }
+  }
+
+    // message sending
+    form.onsubmit = async function (event) {
+      event.preventDefault();
+
+      // prepare the form data
+      const formData = new FormData(form);
+      formData.append('receiverId', participant.id);
+      formData.append('receiverName', participant.name);
+      formData.append('avatar', participant.avatar || '');
+      formData.append('conversationId', current_conversation_id);
+
+      // send the request to server
+      let response = await fetch("/inbox/message", {
+        method: "POST",
+        body: formData,
+      });
+
+      // get response
+      let result = await response.json();
+
+      if (!result.errors) {
+        form.reset(); // reset the form
+      } else {
+        failedToast("Error sending messages!");
+      }
+    }
+
+    // message delete
+    async function deleteMessage(messageId){
+
+      // trigger confirm popup
+      Swal.fire({
+        title: 'Delete message?',
+        text: "Message will delete permanently!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2ecc71',
+        cancelButtonColor: '#ff4757',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Keep',
+        color: '#fff',
+        background: 'linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          let response = await fetch(`/inbox/msg/${messageId}`, {
+            method: "DELETE",
+          });
+
+          let result = await response.json();
+
+          if(!result.errors){
+            successDeleteToast("Message");
+            document.getElementById(messageId).remove();
+          } else {
+            failedToast(`Couldn't delete message !`);
+          }
+        } else {
+          cancelDeleteToast();
+        }
+      });
+    }
+
+    // conversation delete
+    async function deleteConversation(conversationId) {
       
-    </script>
+      // trigger confirm popup
+      Swal.fire({
+        title: 'Delete conversation?',
+        text: "Conversation will delete permanently!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2ecc71',
+        cancelButtonColor: '#ff4757',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Keep',
+        color: '#fff',
+        background: 'linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          let response = await fetch(`/inbox/conversation/${conversationId}`, {
+            method: "DELETE",
+          });
+
+          let result = await response.json();
+
+          if(!result.errors){
+            successDeleteToast("Conversation");
+            // reloading page
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          } else {
+            failedToast("Couldn't delete conversation");
+          }
+        } else {
+          cancelDeleteToast();
+        }
+      });
+    }
+    
+  </script>
     
   </body>
 </html>
