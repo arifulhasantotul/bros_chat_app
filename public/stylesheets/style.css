@@ -441,6 +441,14 @@ input[type="submit"]:active {
   border-radius: 6px;
   width: 100%;
   height: auto;
+  margin-bottom: 15px;
+  overflow-y: scroll;
+  cursor: pointer;
+}
+
+.search_conversation ul > li:last-child,
+.search_users ul > li:last-child {
+  margin-bottom: 0;
 }
 
 .search_conversation .user,

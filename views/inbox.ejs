@@ -342,7 +342,7 @@
               const avatar = creator.avatar ? "./uploads/avatars/" + creator.avatar : "./images/nophoto.png";
 
               generateHTML += 
-                `<li>
+                `<li onclick="getMessages('${conversation._id}', '${creator.name}')">
                   <div class="user">
                     <div class="avatar">
                       <img src="${avatar}" />
@@ -354,7 +354,7 @@
               const avatar = participant.avatar ? "./uploads/avatars/" + participant.avatar : "./images/nophoto.png";
 
               generateHTML += 
-                `<li>
+                `<li onclick="getMessages('${conversation._id}', '${participant.name}')">
                   <div class="user">
                     <div class="avatar">
                       <img src="${avatar}" />
