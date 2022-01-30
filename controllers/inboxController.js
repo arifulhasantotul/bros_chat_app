@@ -96,8 +96,10 @@ async function searchConversation(req, res, next) {
           $or: [
             {
               "creator.name": name_search_regex,
+              "participant.name": req.user.username,
             },
             {
+              "creator.name": req.user.username,
               "participant.name": name_search_regex,
             },
           ],
@@ -358,6 +360,7 @@ async function removeConversation(req, res, next) {
 module.exports = {
   getInbox,
   searchUser,
+  searchConversation,
   addConversation,
   getMessages,
   sendMessage,

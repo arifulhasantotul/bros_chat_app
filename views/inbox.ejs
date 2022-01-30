@@ -15,7 +15,7 @@
             id="search_field" 
             autocomplete="off" 
           />
-          <p class="error"></p>
+          <p id="conversation_search_error" class="error"></p>
           <div class="search_conversation"></div>
           <input type="submit" value="Submit" class="hide">
         </form>
@@ -120,7 +120,7 @@
     }
 
     // delete cancel toast 
-    const cancelDeleteToast = ()=>{
+    const cancelDeleteToast = () =>{
       Swal.fire({
         toast: true,
         position: "top-end",
@@ -290,6 +290,84 @@
         form.reset(); // reset the form
       } else {
         failedToast("Error sending messages!");
+      }
+    }
+
+    // on keyup, start the countdown
+    search_field.addEventListener("keyup",()=>{
+      clearTimeout(startSearchingTimer);
+      // reset 
+      conversations_placeholder.style.display = "none";
+
+      if(search_field.value){
+        startSearchingTimer = setTimeout(searchConversations, endTypingInterval); //user is "finished typing", send search request 
+      }
+    });
+
+    // on keydown , clear the countdown
+    search_field.addEventListener("keydown", ()=>{
+      clearTimeout(startSearchingTimer);
+    });
+
+    // search conversation
+    async function searchConversations(){
+      let response = await fetch("/inbox/search/conversation", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({
+          conversation: search_field.value,
+        }),
+      });
+
+      // get response 
+      let result = await response.json();
+      
+
+      // handle error and response
+      if (result.errors) {
+        const error_placeholder = document.getElementById("conversation_search_error");
+        error_placeholder.textContent = result.errors.common.msg;
+        error_placeholder.style.display = "block";
+      } else {
+        if (result.length > 0) {
+          let generateHTML = "<ul>";
+          result.forEach((conversation)=>{
+            console.log(conversation);
+            console.log("loggedInUser",loggedinUserName);
+            const creator = conversation.creator;
+            const participant = conversation.participant;
+            if(creator.name !== loggedinUserName) {
+              const avatar = creator.avatar ? "./uploads/avatars/" + creator.avatar : "./images/nophoto.png";
+
+              generateHTML += 
+                `<li>
+                  <div class="user">
+                    <div class="avatar">
+                      <img src="${avatar}" />
+                    </div>
+                    <div class="username">${creator.name}</div>
+                  </div>
+                 </li>`;
+            } else {
+              const avatar = participant.avatar ? "./uploads/avatars/" + participant.avatar : "./images/nophoto.png";
+
+              generateHTML += 
+                `<li>
+                  <div class="user">
+                    <div class="avatar">
+                      <img src="${avatar}" />
+                    </div>
+                    <div class="username">${participant.name}</div>
+                  </div>
+                 </li>`;
+            }
+          });
+          generateHTML += "</ul>";
+          conversations_placeholder.innerHTML = generateHTML;
+          conversations_placeholder.style.display = "block";
+        }
       }
     }
 

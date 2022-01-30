@@ -19,6 +19,7 @@ const {
   removeMsgAndAttachments,
   removeMessages,
   removeConversation,
+  searchConversation,
 } = require("../controllers/inboxController");
 const { checkLogin } = require("../middlewares/common/checkLogin");
 const decorateHTMLResponse = require("../middlewares/common/decorateHTMLResponse");
@@ -34,6 +35,9 @@ router.post("/search", checkLogin, searchUser);
 
 // POST: add conversation
 router.post("/conversation", checkLogin, addConversation);
+
+// POST: search conversation
+router.post("/search/conversation", checkLogin, searchConversation);
 
 // GET: messages of a conversation
 router.get("/messages/:conversation_id", checkLogin, getMessages);

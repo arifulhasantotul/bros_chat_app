@@ -407,7 +407,7 @@ input[type="submit"]:active {
   background-color: var(--red);
   color: #fff;
 }
-
+.search_conversation,
 .search_users {
   display: none;
   background: var(--secondary);
@@ -423,10 +423,17 @@ input[type="submit"]:active {
   height: auto;
 }
 
+.search_conversation {
+  background: var(--tertiary);
+  width: 17%;
+}
+
+.search_conversation ul,
 .search_users ul {
   list-style-type: none;
 }
 
+.search_conversation ul > li,
 .search_users ul > li {
   background: var(--primary);
   padding: 7px;
@@ -436,12 +443,14 @@ input[type="submit"]:active {
   height: auto;
 }
 
+.search_conversation .user,
 .search_users .user {
   display: grid;
   grid-template-columns: 30px 1fr;
   align-items: center;
 }
 
+.search_conversation .avatar img,
 .search_users .avatar img {
   width: 24px;
   height: 24px;
