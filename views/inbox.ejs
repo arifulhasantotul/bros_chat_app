@@ -7,8 +7,20 @@
     <!-- chat container start  -->
     <div id="chat-container">
       <div id="search-container">
-        <input type="text" placeholder="Search" />
+        <form>
+          <input 
+            type="text" 
+            placeholder="User name" 
+            name="search_field" 
+            id="search_field" 
+            autocomplete="off" 
+          />
+          <p class="error"></p>
+          <div class="search_conversation"></div>
+          <input type="submit" value="Submit" class="hide">
+        </form>
       </div>
+      
       <div id="conversation-list">
         <% data.forEach(function(conversation) { %>
           <!-- conversation creator is same to logged in user, so we need to show participant name and avatar -->
@@ -85,6 +97,12 @@
     const loggedinUserName = '<%= loggedInUser.username %>';
     let participant = null; // selected conversation participant object
     let current_conversation_id; // selected conversation id
+    
+    // search conversation
+    let startSearchingTimer;
+    const endTypingInterval = 500;
+    const search_field = document.querySelector("input#search_field");
+    let conversations_placeholder = document.querySelector(".search_conversation");
 
     // delete success toast
     const successDeleteToast = (topic) => {

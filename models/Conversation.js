@@ -8,11 +8,13 @@ const conversationSchema = mongoose.Schema(
       id: mongoose.Types.ObjectId,
       name: String,
       avatar: String,
+      email: String,
     },
     participant: {
       id: mongoose.Types.ObjectId,
       name: String,
       avatar: String,
+      email: String,
     },
     last_updated: {
       type: Date,

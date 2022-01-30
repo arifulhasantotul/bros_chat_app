@@ -63,10 +63,49 @@ async function searchUser(req, res, next) {
             },
           ],
         },
-        "name avatar"
+        "name avatar email"
       );
 
       res.json(users);
+    } else {
+      throw createError("You must provide some text to search!");
+    }
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: err.message,
+        },
+      },
+    });
+  }
+}
+
+// search conversation
+async function searchConversation(req, res, next) {
+  const conversation = req.body.conversation;
+  const searchQuery = conversation.replace("+88", "");
+
+  // using regex to create filter option
+  const name_search_regex = new RegExp(escape(searchQuery), "i");
+
+  try {
+    if (searchQuery !== "") {
+      const conversations = await Conversation.find(
+        {
+          $or: [
+            {
+              "creator.name": name_search_regex,
+            },
+            {
+              "participant.name": name_search_regex,
+            },
+          ],
+        },
+        "creator.name creator.avatar participant.name participant.avatar"
+      );
+
+      res.status(200).json(conversations);
     } else {
       throw createError("You must provide some text to search!");
     }
@@ -88,11 +127,13 @@ async function addConversation(req, res, next) {
       creator: {
         id: req.user.userId,
         name: req.user.username,
+        email: req.user.email,
         avatar: req.user.avatar || null,
       },
       participant: {
         id: req.body.id,
         name: req.body.participant,
+        email: req.body.email,
         avatar: req.body.avatar || null,
       },
     });

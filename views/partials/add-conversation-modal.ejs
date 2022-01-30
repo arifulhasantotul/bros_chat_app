@@ -100,11 +100,12 @@
       if (result.length > 0) {
         let generatedHtml = "<ul>";
         result.forEach((user) => {
+          console.log(user);
           const avatar = user.avatar
             ? "./uploads/avatars/" + user.avatar
             : "./images/nophoto.png";
 
-          generatedHtml += `<li onclick="createConversation('${user._id}', '${user.name}', '${user.avatar}')">
+          generatedHtml += `<li onclick="createConversation('${user._id}', '${user.name}', '${user.avatar}', '${user.email}')">
               <div class="user">
                 <div class="avatar">
                   <img src="${avatar}" />
@@ -121,14 +122,16 @@
   }
 
   // create Conversation
-  async function createConversation(participant_id, name, avatar) {
+  async function createConversation(participant_id, name, avatar, email) {
     try {
+      console.log("email",email);
       const response = await fetch("/inbox/conversation", {
         method: "POST",
         body: JSON.stringify({
           participant: name,
           id: participant_id,
           avatar: avatar != "undefined" ? avatar : null,
+          email: email,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
