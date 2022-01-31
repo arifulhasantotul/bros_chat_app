@@ -114,7 +114,6 @@
       if (result.length > 0) {
         let generatedHtml = "<ul>";
         result.forEach((user) => {
-          console.log(user);
           const avatar = user.avatar
             ? "./uploads/avatars/" + user.avatar
             : "./images/nophoto.png";
@@ -153,7 +152,7 @@
       });
 
       const result = response.json();
-
+      
       if (!result.errors) {
         // reset
         users_placeholder.style.display = "none";
@@ -166,6 +165,7 @@
         throw new Error(result.errors.common.msg);
       }
     } catch (err) {
+      console.log(err);
       conversationFailureToast();
     }
   }

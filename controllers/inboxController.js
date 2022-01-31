@@ -125,24 +125,45 @@ async function searchConversation(req, res, next) {
 // add conversation
 async function addConversation(req, res, next) {
   try {
-    const newConversation = new Conversation({
-      creator: {
-        id: req.user.userId,
-        name: req.user.username,
-        email: req.user.email,
-        avatar: req.user.avatar || null,
-      },
-      participant: {
-        id: req.body.id,
-        name: req.body.participant,
-        email: req.body.email,
-        avatar: req.body.avatar || null,
-      },
+    const oldConversation = await Conversation.find({
+      $or: [
+        {
+          "creator.email": req.user.email,
+          "participant.email": req.body.email,
+        },
+        {
+          "creator.email": req.body.email,
+          "participant.email": req.user.email,
+        },
+      ],
     });
 
-    const result = await newConversation.save();
+    if (oldConversation && oldConversation.length === 0) {
+      const newConversation = new Conversation({
+        creator: {
+          id: req.user.userId,
+          name: req.user.username,
+          email: req.user.email,
+          avatar: req.user.avatar || null,
+        },
+        participant: {
+          id: req.body.id,
+          name: req.body.participant,
+          email: req.body.email,
+          avatar: req.body.avatar || null,
+        },
+      });
+
+      const result = await newConversation.save();
+      // res.status(200).json({
+      //   message: "Conversation was added successfully!",
+      // });
+    } else {
+      throw createError("Conversation already exists!");
+    }
+
     res.status(200).json({
-      message: "Conversation was added successfully!",
+      message: "Creating conversation done!",
     });
   } catch (err) {
     res.status(500).json({
