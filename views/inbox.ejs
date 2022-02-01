@@ -33,7 +33,7 @@
               <% } %>
               <div class="title-text"><%= conversation.participant.name %></div>
               <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
-              <img class="conversation-dlt" src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
+              <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
             </div>
           <% } else { %>
             <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.creator.name %>')">
@@ -44,7 +44,7 @@
               <% } %>
               <div class="title-text"><%= conversation.creator.name %></div>
               <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
-              <img class="conversation-dlt" src="./images/trash.png" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
+              <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
             </div>
           <% } %>
         <% }); %>
@@ -244,7 +244,7 @@
                     ${showAvatar}
                     <div class="message-text">${message.text}</div>
                     <div class="${showTrashIcon}">
-                      <img onclick="deleteMessage('${message._id}')" src="./images/trash.png" alt="Delete" />
+                      <img onclick="deleteMessage('${message._id}')" src="./images/trash.svg" alt="Delete" />
                     </div>
                     ${attachments}
                     <div class="message-time">${moment(message.date_time).fromNow()}</div>
