@@ -95,5 +95,29 @@ async function removeUser(req, res, next) {
   }
 }
 
+// promote admin
+async function makeAdmin(req, res, next) {
+  try {
+    const user = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $set: { role: "Admin" } },
+      { upsert: true }
+    );
+    console.log(user);
+
+    res.status(200).json({
+      message: "User promoted successfully!",
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Could promote the user!",
+        },
+      },
+    });
+  }
+}
+
 // exports functions
-module.exports = { getUsers, addUser, removeUser };
+module.exports = { getUsers, addUser, removeUser, makeAdmin };
