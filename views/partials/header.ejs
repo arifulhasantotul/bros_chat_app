@@ -41,6 +41,38 @@
       <ul class="nav_links">
         <!-- link item 1  -->
         <li>
+          <% if (loggedInUser && loggedInUser.username) { %>
+            <div class="profile_details">
+              <div class="profile_content">
+                <% if(loggedInUser && loggedInUser.avatar) { %>
+                  <img src="./uploads/avatars/<%= loggedInUser.avatar %>" alt="<%= loggedInUser.username %>" />
+                <% } else { %>
+                  <img src="./images/nophoto.png" alt="">
+                <% } %>
+              </div>
+              <div class="name_job">
+                <div class="profile_name"><%= loggedInUser?.username.slice(0,10) %>...</div>
+                <div class="job"><%= loggedInUser?.role %></div>
+              </div >
+              <i onclick="logout()" class="bx bx-log-out"></i>
+            </div>
+          <% } else { %> 
+            <div class="profile_details">
+              <div class="profile_content">
+                <img src="./images/login.png" alt="" />
+              </div>
+              <div class="name_job">
+                <div class="profile_name">Not Found</div>
+                <div class="job">Not Found</div>
+              </div>
+              <a href="/">
+                <i class="bx bx-log-in-circle"></i>
+              </a>
+            </div>
+          <% } %>
+        </li>
+        
+        <li>
           <a href="/inbox">
             <i class="bx bx-collection"></i>
             <span class="link_name">Inbox</span>
@@ -77,37 +109,7 @@
         </li>
 
         <!-- link item 10 user  -->
-        <li>
-          <% if (loggedInUser && loggedInUser.username) { %>
-            <div class="profile_details">
-              <div class="profile_content">
-                <% if(loggedInUser && loggedInUser.avatar) { %>
-                  <img src="./uploads/avatars/<%= loggedInUser.avatar %>" alt="<%= loggedInUser.username %>" />
-                <% } else { %>
-                  <img src="./images/nophoto.png" alt="">
-                <% } %>
-              </div>
-              <div class="name_job">
-                <div class="profile_name"><%= loggedInUser?.username.slice(0,10) %>...</div>
-                <div class="job"><%= loggedInUser?.role %></div>
-              </div >
-              <i onclick="logout()" class="bx bx-log-out"></i>
-            </div>
-          <% } else { %> 
-            <div class="profile_details">
-              <div class="profile_content">
-                <img src="./images/login.png" alt="" />
-              </div>
-              <div class="name_job">
-                <div class="profile_name">Not Found</div>
-                <div class="job">Not Found</div>
-              </div>
-              <a href="/">
-                <i class="bx bx-log-in-circle"></i>
-              </a>
-            </div>
-          <% } %>
-        </li>
+        
         <!-- link item end  -->
       </ul>
       <!-- sidebar nav link end  -->
