@@ -30,13 +30,29 @@
   font-family: "Poppins", sans-serif;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 html {
   font-size: 62.5%;
+}
+
+@media only screen and (max-width: 1200px) {
+  html {
+    font-size: 59.5%;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  html {
+    font-size: 57.5%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  html {
+    font-size: 55.5%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  html {
+    font-size: 54%;
+  }
 }
 
 .center {
@@ -113,7 +129,7 @@ input[type="submit"]:active {
   height: 100%;
   width: 22rem;
   background: #11101d;
-  padding-bottom: 127px;
+  padding-bottom: 12.7rem;
   z-index: 100;
   transition: all 0.5s ease;
 }
@@ -121,21 +137,21 @@ input[type="submit"]:active {
   width: 78px;
 }
 .sidebar .logo_details {
-  height: 60px;
+  height: 6rem;
   color: #fff;
   display: flex;
   align-items: center;
 }
 .sidebar .logo_details i {
-  font-size: 30px;
+  font-size: 3rem;
   color: #fff;
-  height: 50px;
-  min-width: 78px;
+  height: 5rem;
+  min-width: 7.8rem;
   text-align: center;
-  line-height: 50px;
+  line-height: 5rem;
 }
 .sidebar .logo_details .logo_name {
-  font-size: 22px;
+  font-size: 2.2rem;
   color: #fff;
   font-weight: 600;
   transition: 0.3s ease;
@@ -173,12 +189,12 @@ input[type="submit"]:active {
   display: block;
 }
 .sidebar .nav_links li i {
-  height: 50px;
-  min-width: 78px;
+  height: 5rem;
+  min-width: 7.8rem;
   text-align: center;
-  line-height: 50px;
+  line-height: 5rem;
   color: #fff;
-  font-size: 20px;
+  font-size: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -195,17 +211,18 @@ input[type="submit"]:active {
 }
 
 .sidebar .nav_links li a .link_name {
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 400;
   color: #fff;
+  letter-spacing: 0.1rem;
 }
 .sidebar.close .nav_links li a .link_name {
   opacity: 0;
   pointer-events: none;
 }
 .sidebar .nav_links li .sub_menu {
-  padding: 6px 6px 14px 80px;
-  margin-top: -10px;
+  padding: 0.6rem 0.6rem 1.4rem 8rem;
+  margin-top: -1rem;
   background: #1d1b31;
   display: none;
 }
@@ -213,8 +230,8 @@ input[type="submit"]:active {
   display: block;
 }
 .sidebar .nav_links li .sub_menu a {
-  font-size: 15px;
-  padding: 5px 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
   color: #fff;
   white-space: nowrap;
   opacity: 0.6;
@@ -244,19 +261,19 @@ input[type="submit"]:active {
   display: none;
 }
 .sidebar.close .nav_links li .sub_menu .link_name {
-  font-size: 18px;
+  font-size: 1.8rem;
   opacity: 1;
   display: block;
 }
 .sidebar.close .nav_links li .sub_menu .link_name {
-  font-size: 18px;
+  font-size: 1.8rem;
   opacity: 1;
   display: block;
 }
 .sidebar .nav_links li .sub_menu.blank {
   opacity: 1;
   pointer-events: auto;
-  padding: 3px 20px 6px 16px;
+  padding: 0.3rem 2rem 0.6rem 1.6rem;
   opacity: 0;
   transition: 0s;
   pointer-events: none;
@@ -271,12 +288,12 @@ input[type="submit"]:active {
   align-items: center;
   justify-content: space-between;
   background: #1d1b31;
-  padding: 6px 0;
+  padding: 0.6rem 0;
   border-radius: 5rem;
   transition: all 0.4s ease;
 }
 .sidebar.close .profile_details {
-  width: 78px;
+  width: 7.8rem;
   border-radius: 0;
   transition: all 0.4s ease;
 }
@@ -285,19 +302,19 @@ input[type="submit"]:active {
   align-items: center;
 }
 .sidebar .profile_details img {
-  height: 42px;
-  width: 42px;
+  height: 4.2rem;
+  width: 4.2rem;
   object-fit: cover;
-  border-radius: 16px;
-  margin: 0 14px 0 12px;
+  border-radius: 1.6rem;
+  margin: 0 1.4rem 0 1.2rem;
   background: #11101d;
-  padding: 5px;
+  padding: 0.5rem;
 }
 .sidebar .profile_details .profile_name,
 .sidebar .profile_details .job {
   font-weight: 500;
   color: #fff;
-  font-size: 15px;
+  font-size: 1.5rem;
   margin-right: -5.5px;
   white-space: nowrap;
   letter-spacing: 0.5px;
@@ -308,7 +325,7 @@ input[type="submit"]:active {
   display: none;
 }
 .sidebar .profile_details .job {
-  font-size: 10px;
+  font-size: 1rem;
 }
 .home_section {
   position: relative;
@@ -320,18 +337,18 @@ input[type="submit"]:active {
   transition: all 0.3s ease;
 }
 .sidebar.close ~ .home_section {
-  left: 78px;
-  width: calc(100% - 78px);
+  left: 7.8rem;
+  width: calc(100% - 7.8rem);
 }
 .home_section .home_content {
-  height: 60px;
+  height: 6rem;
   display: flex;
   align-items: center;
 }
 .home_section .home_content .toggle_button {
   width: 3.2rem;
   height: 3.2rem;
-  margin: 0 15px;
+  margin: 0 1.5rem;
   box-shadow: var(--btn_shadow);
   -webkit-box-shadow: var(--btn_shadow);
   -moz-box-shadow: var(--btn_shadow);
@@ -344,11 +361,11 @@ input[type="submit"]:active {
 }
 .home_section .home_content .text {
   color: #e4e9f7;
-  font-size: 26px;
+  font-size: 2.6rem;
   font-weight: 600;
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 600px) {
   .sidebar {
     width: 18rem;
     height: 100vh;
@@ -374,10 +391,12 @@ input[type="submit"]:active {
     overflow-y: scroll;
   }
   .sidebar .nav_links li i {
-    min-width: 45px;
+    min-width: 3rem;
+    padding-left: 2rem;
   }
   .sidebar .nav_links li a .link_name {
-    font-size: 14px;
+    padding-left: 2rem;
+    font-size: 1.4rem;
   }
   .sidebar .profile_details {
     width: 18rem;
@@ -386,6 +405,9 @@ input[type="submit"]:active {
   .sidebar.close .profile_details {
     width: 0px;
     display: none;
+  }
+  .sidebar .nav_links .profile_details i {
+    padding-left: 0;
   }
   .sidebar .profile_details img {
     height: 30px;
@@ -546,7 +568,7 @@ input[type="submit"]:active {
 
 /* modal related responsive styles */
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 600px) {
   .modal-wrapper {
     width: 100%;
     height: 100%;
@@ -902,8 +924,38 @@ img.conversation-dlt:hover {
 }
 
 /* inbox related responsive styles */
+@media only screen and (max-width: 950px) {
+  #chat-container {
+    min-width: 70%;
+    height: calc(100vh - 6rem);
+    grid:
+      "search-container chat-title" 55px
+      "conversation-list chat-message-list" 1fr
+      "new-message-container chat-form" 78px
+      /180px 1fr;
+  }
 
-@media only screen and (max-width: 550px) {
+  .conversation-message {
+    display: none;
+  }
+
+  #search-container {
+    justify-content: center;
+    padding: 0;
+  }
+
+  #search-container input {
+    width: 16rem;
+    padding-right: 0px;
+  }
+}
+@media only screen and (max-width: 750px) {
+  html {
+    font-size: 55.5%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
   #chat-container {
     min-width: 70%;
     height: calc(100vh - 6rem);
@@ -916,6 +968,7 @@ img.conversation-dlt:hover {
 
   .title-text,
   .created-date,
+  .conversation-date,
   .conversation-message {
     display: none;
   }
