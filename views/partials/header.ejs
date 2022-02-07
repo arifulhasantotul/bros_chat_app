@@ -54,7 +54,7 @@
                 <div class="profile_name"><%= loggedInUser?.username.slice(0,10) %>...</div>
                 <div class="job"><%= loggedInUser?.role %></div>
               </div >
-              <i onclick="logout()" class="bx bx-log-out"></i>
+              <img src="./images/logout.svg" onclick="logout()" class="log_btn" />
             </div>
           <% } else { %> 
             <div class="profile_details">
@@ -66,7 +66,7 @@
                 <div class="job">Not Found</div>
               </div>
               <a href="/">
-                <i class="bx bx-log-in-circle"></i>
+                <img src="./images/login.svg" class="log_btn" />
               </a>
             </div>
           <% } %>

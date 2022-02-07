@@ -115,7 +115,7 @@ input[type="submit"]:active {
   max-width: 120px;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 600px) {
   .nothing {
     display: none;
   }
@@ -194,6 +194,7 @@ input[type="submit"]:active {
   text-align: center;
   line-height: 5rem;
   color: #fff;
+  margin-left: -1rem;
   font-size: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -284,6 +285,7 @@ input[type="submit"]:active {
 }
 .sidebar .profile_details {
   width: 22rem;
+  height: 7.1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -295,6 +297,7 @@ input[type="submit"]:active {
 .sidebar.close .profile_details {
   width: 7.8rem;
   border-radius: 0;
+  height: 7.1rem;
   transition: all 0.4s ease;
 }
 .sidebar .profile_details .profile_content {
@@ -310,6 +313,15 @@ input[type="submit"]:active {
   background: #11101d;
   padding: 0.5rem;
 }
+.sidebar .profile_details img.log_btn {
+  height: 2.8rem;
+  width: 2.8rem;
+  border-radius: 0;
+  margin: 1rem;
+  background: transparent;
+  padding: 0.5rem;
+  cursor: pointer;
+}
 .sidebar .profile_details .profile_name,
 .sidebar .profile_details .job {
   font-weight: 500;
@@ -319,7 +331,7 @@ input[type="submit"]:active {
   white-space: nowrap;
   letter-spacing: 0.5px;
 }
-.sidebar.close .profile_details i,
+.sidebar.close .profile_details img.log_btn,
 .sidebar.close .profile_details .profile_name,
 .sidebar.close .profile_details .job {
   display: none;
@@ -392,7 +404,8 @@ input[type="submit"]:active {
   }
   .sidebar .nav_links li i {
     min-width: 3rem;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
+    margin-left: 0;
   }
   .sidebar .nav_links li a .link_name {
     padding-left: 2rem;
@@ -415,6 +428,7 @@ input[type="submit"]:active {
     border-radius: 12px;
     padding: 3px;
   }
+
   .sidebar .profile_details .profile_name,
   .sidebar .profile_details .job {
     font-size: 13px;
@@ -570,8 +584,8 @@ input[type="submit"]:active {
 
 @media only screen and (max-width: 600px) {
   .modal-wrapper {
-    width: 100%;
-    height: 100%;
+    width: 99%;
+    height: 99%;
   }
   .modal {
     width: 95%;
@@ -654,7 +668,7 @@ input[type="submit"]:active {
   grid-area: search-container;
   border-radius: 10px 0 0 0;
   box-shadow: 0 2px 3px -2px rgba(0, 0, 0, 0.75);
-  z-index: 1;
+  z-index: 1000;
 }
 
 #search-container input {
@@ -667,7 +681,7 @@ input[type="submit"]:active {
   padding-left: 48px;
   padding-right: 20px;
   font-size: 1.4rem;
-  background: url(../images/search.png) no-repeat var(--tertiary);
+  background: url(../images/search.svg) no-repeat var(--tertiary);
   background-position: 15px center;
   background-size: 20px 20px;
 }
@@ -738,8 +752,8 @@ img.conversation-dlt {
   width: 2rem;
   height: 2rem;
   border: none;
-  right: 10px;
-  top: 20px;
+  right: 1rem;
+  top: 2rem;
 }
 
 img.conversation-dlt:hover {
@@ -764,7 +778,10 @@ img.conversation-dlt:hover {
   border-radius: 100%;
   color: var(--dark);
   text-decoration: none;
-  font-size: 3.6rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 3.2rem;
+  border: 3px solid var(--dark);
   box-shadow: var(--btn_shadow);
   -webkit-box-shadow: var(--btn_shadow);
   -moz-box-shadow: var(--btn_shadow);
@@ -953,6 +970,9 @@ img.conversation-dlt:hover {
   html {
     font-size: 55.5%;
   }
+  .search_conversation {
+    width: 20%;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -963,7 +983,7 @@ img.conversation-dlt:hover {
       "search-container chat-title" 71px
       "conversation-list chat-message-list" 1fr
       "new-message-container chat-form" 78px
-      /70px 1fr;
+      /80px 1fr;
   }
 
   .title-text,
@@ -979,8 +999,24 @@ img.conversation-dlt:hover {
   }
 
   #search-container input {
-    width: 0px;
+    width: 8rem;
     padding-right: 0px;
+    padding-left: 2.6rem;
+    background-position: 0.5rem center;
+  }
+
+  .search_conversation {
+    width: calc(15% + 13vw);
+    padding: 1rem;
+  }
+
+  img.conversation-dlt {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    right: 0rem;
+    top: 1rem;
   }
 }
 
@@ -1049,8 +1085,7 @@ img.conversation-dlt:hover {
 
 @media only screen and (max-width: 600px) {
   #login-container {
-    width: 80%;
-    height: 80vh;
+    width: 100%;
     grid-template-areas:
       "branding"
       "login-form";
@@ -1066,9 +1101,8 @@ img.conversation-dlt:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 100%;
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 6rem);
   background: var(--primary);
   border-radius: 10px;
   padding: 4rem 3rem;
@@ -1125,8 +1159,8 @@ img.conversation-dlt:hover {
 }
 
 #users-table tbody .name img {
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
   border-radius: 100%;
   border: 2px solid var(--blue);
 }
