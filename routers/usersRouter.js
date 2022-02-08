@@ -14,7 +14,7 @@ const {
   getUsers,
   addUser,
   removeUser,
-  makeAdmin,
+  changeUserRole,
 } = require("../controllers/usersController");
 const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
 const decorateHTMLResponse = require("../middlewares/common/decorateHTMLResponse");
@@ -43,13 +43,23 @@ router.post(
 );
 
 // PUT: promote admin
+router.put(
+  "/makeadmin/:id",
+  checkLogin,
+  requireRole(["Admin"]),
+  changeUserRole
+);
 
 // PUT: demote admin
-router.put("demoteadmin/:id", checkLogin, requireRole(["Admin"]));
+router.put(
+  "/demoteadmin/:id",
+  checkLogin,
+  requireRole(["Admin"]),
+  changeUserRole
+);
 
 // DELETE: remove user
 router.delete("/:id", checkLogin, requireRole(["Admin"]), removeUser);
 
-router.put("makeadmin/:id", checkLogin, makeAdmin);
 // module export
 module.exports = router;

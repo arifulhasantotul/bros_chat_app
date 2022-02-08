@@ -39,14 +39,16 @@
                 <td><%= user.email %></td>
                 <td><%= user.role %></td>
                 <% if(loggedInUser && loggedInUser.role === 'Admin'){ %>
-                <td class="manage">
-                  <img onclick="deleteUser('<%= user._id %>')" src="./images/trash.svg" alt="Delete" />
-                  <% if(user.role === "Admin"){ %>
-                  <img src="./images/admin_demote.svg" onclick="demoteAdmin('<%= user._id %>')" alt="make_user">
-                  <% } else { %>
-                    <img src="./images/admin_promote.svg" onclick="makeAdmin('<%= user._id %>')" alt="make_admin">
-                  <% } %>
-                </td>
+                  <td class="manage">
+                    <img onclick="deleteUser('<%= user._id %>')" src="./images/trash.svg" alt="Delete" />
+                    <% if(user.role === "Admin"){ %>
+                    <img src="./images/admin_demote.svg" onclick="demoteAdmin('<%= user._id %>')" alt="make_user" />
+                    <% } else { %>
+                      <img src="./images/admin_promote.svg" onclick="makeAdmin('<%= user._id %>')" alt="make_admin" />
+                    <% } %>
+                  </td>
+                <% } else { %>
+                  <td>Sorry! Not Authorized.</td>
                 <% } %>
               </tr>
             <% }); %>
@@ -137,9 +139,9 @@
         }
       });
     }
-    // delete user function
+    
+    // make admin function
     async function makeAdmin(userId) {
-      console.log(userId);
       // trigger confirm popup
       Swal.fire({
         title: 'Make Admin?',
@@ -159,17 +161,18 @@
               headers: {
                 "Content-type": "application/json; charset=UTF-8",
               },
+              body: JSON.stringify({role: 'Admin'})
           });
 
           let result = await response.json();
-          console.log(result);
+          
           if(!result.errors){
             successToast("Promoted !", "User promoted to admin");
       
             // reload the page after 1 second
-            // setTimeout(() => {
-            //   location.reload();
-            // }, 1000);
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
           } else {
             failedToast(`Couldn't promote the user !`);
           }
@@ -178,11 +181,13 @@
         }
       });
     }
+
+    // demoteAdmin
     async function demoteAdmin(userId) {
       // trigger confirm popup
       Swal.fire({
-        title: 'Make Admin?',
-        text: "User will be promoted to Admin!",
+        title: 'Demote Admin?',
+        text: "Admin will be demoted to user!",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#2ecc71',
@@ -197,7 +202,8 @@
               method: "PUT",
               headers: {
                 "Content-type": "application/json; charset=UTF-8",
-              }
+              },
+              body: JSON.stringify({role: 'User'})
           });
 
           let result = await response.json();
@@ -206,9 +212,9 @@
             successToast("Demoted !","Admin demoted to user!");
       
             // reload the page after 1 second
-            // setTimeout(() => {
-            //   location.reload();
-            // }, 1000);
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
           } else {
             failedToast(`Couldn't demoted admin!`);
           }

@@ -95,24 +95,24 @@ async function removeUser(req, res, next) {
   }
 }
 
-// promote admin
-async function makeAdmin(req, res, next) {
+// change user role
+async function changeUserRole(req, res, next) {
   try {
-    const user = await User.findByIdAndUpdate(
+    const role = req.body;
+    const user = await User.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { role: "Admin" } },
-      { upsert: true }
+      { $set: role },
+      { new: true, upsert: true, useFindAndModify: false }
     );
-    console.log(user);
 
     res.status(200).json({
-      message: "User promoted successfully!",
+      message: "User role changed successfully!",
     });
   } catch (err) {
     res.status(500).json({
       errors: {
         common: {
-          msg: "Could promote the user!",
+          msg: "Couldn't changed the user role!",
         },
       },
     });
@@ -120,4 +120,4 @@ async function makeAdmin(req, res, next) {
 }
 
 // exports functions
-module.exports = { getUsers, addUser, removeUser, makeAdmin };
+module.exports = { getUsers, addUser, removeUser, changeUserRole };
