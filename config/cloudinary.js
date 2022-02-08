@@ -11,4 +11,4 @@ cloudinary.config({
 });
 
 // export function
-module.exports = { cloudinary };
+module.exports = cloudinary;

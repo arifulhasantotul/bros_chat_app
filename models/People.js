@@ -31,6 +31,9 @@ const peopleSchema = mongoose.Schema(
       enum: ["User", "Admin"],
       default: "User",
     },
+    cloudinary_id: {
+      type: String,
+    },
   },
   {
     timestamps: true,
