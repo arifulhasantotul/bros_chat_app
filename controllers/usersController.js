@@ -10,6 +10,7 @@
 const { hash } = require("bcrypt");
 const { unlink } = require("fs");
 const path = require("path");
+const cloudinary = require("../config/cloudinary");
 
 // internal imports
 const User = require("../models/People");
@@ -33,24 +34,31 @@ async function addUser(req, res, next) {
 
   // hashing password using bcrypt
   const hashedPassword = await hash(req.body.password, saltRound);
-
-  // checking avatar/files
-  if (req.files && req.files.length > 0) {
-    newUser = new User({
-      ...req.body,
-      avatar: req.files[0].filename,
-      password: hashedPassword,
-    });
-  } else {
-    newUser = new User({
-      ...req.body,
-      password: hashedPassword,
-    });
-  }
-
   try {
+    // checking avatar/files
+    if (req.files && req.files.length > 0) {
+      // setting cloudinary
+      const result = await cloudinary.uploader.upload(req.files[0].path, {
+        width: 200,
+        height: 200,
+        crop: "thumb",
+        gravity: "face",
+      });
+      newUser = new User({
+        ...req.body,
+        avatar: result.secure_url,
+        password: hashedPassword,
+        cloudinary_id: result.public_id,
+      });
+    } else {
+      newUser = new User({
+        ...req.body,
+        password: hashedPassword,
+      });
+    }
+
     // save user
-    const result = await newUser.save();
+    await newUser.save();
     res.status(200).json({
       message: "User added successfully!",
     });
