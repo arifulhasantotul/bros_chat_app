@@ -45,7 +45,7 @@
             <div class="profile_details">
               <div class="profile_content">
                 <% if(loggedInUser && loggedInUser.avatar) { %>
-                  <img src="./uploads/avatars/<%= loggedInUser.avatar %>" alt="<%= loggedInUser.username %>" />
+                  <img src="<%= loggedInUser.avatar %>" alt="<%= loggedInUser.username %>" />
                 <% } else { %>
                   <img src="./images/nophoto.png" alt="">
                 <% } %>
