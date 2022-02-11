@@ -181,7 +181,9 @@
           messageHTML = 
           `<div class="message-row ${messageClass}">
             <div class="message-content">
-              <div class="message-text">${data.message.message}</div>
+              <div class="first_content">
+                <div class="message-text">${data.message.message}</div>
+              </div>
               ${attachments}
               <div class="message-time">${moment(data.message.date_time).fromNow()}</div>
             </div>
@@ -190,8 +192,10 @@
           messageHTML = 
           `<div class="message-row ${messageClass}">
             <div class="message-content">
-              ${senderAvatar}
-              <div class="message-text">${data.message.message}</div>
+              <div class="first_content"> 
+                ${senderAvatar}
+                <div class="message-text">${data.message.message}</div>
+              </div>
               ${attachments}
               <div class="message-time">${moment(data.message.date_time).fromNow()}</div>
             </div>
@@ -242,13 +246,17 @@
                 let messageHTML = 
                 `<div id="${message._id}" class="message-row ${messageClass}">
                   <div class="message-content">
-                    ${showAvatar}
-                    <div class="message-text">${message.text}</div>
-                    <div class="${showTrashIcon}">
-                      <img onclick="deleteMessage('${message._id}')" src="./images/trash.svg" alt="Delete" />
+                    <div class="first_content">
+                      ${showAvatar}
+                      <div class="message-text">${message.text}</div>
                     </div>
                     ${attachments}
-                    <div class="message-time">${moment(message.date_time).fromNow()}</div>
+                    <div class="third_content">
+                      <div class="message-time">${moment(message.date_time).fromNow()}</div>
+                      <div class="${showTrashIcon}">
+                        <img onclick="deleteMessage('${message._id}')" src="./images/trash.svg" alt="Delete" />
+                      </div>
+                    </div>
                   </div>
                 </div>`;
 
