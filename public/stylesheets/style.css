@@ -1049,17 +1049,19 @@ img.conversation-dlt:hover {
   display: grid;
   margin-bottom: 20px;
 }
-.message-content .third_content,
-.message-content .first_content {
-  max-width: 60rem;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
 
 .message-content img {
   width: 3.2rem;
   margin: 1rem;
+}
+.message-content .attachments {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.message-content .attachments img {
+  width: 10rem;
 }
 
 .you-message {
@@ -1072,6 +1074,23 @@ img.conversation-dlt:hover {
 }
 
 .other-message {
+  justify-content: start;
+}
+.message-content {
+  max-width: 60rem;
+}
+
+.you-message .message-content .first_content,
+.you-message .message-content .third_content,
+.other-message .message-content .first_content,
+.other-message .message-content .third_content {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.other-message .message-content .first_content,
+.other-message .message-content .third_content {
   justify-content: start;
 }
 
@@ -1093,9 +1112,10 @@ img.conversation-dlt:hover {
 }
 
 .you-message .message-text {
-  background: var(--green);
-  color: var(--dark);
+  color: var(--light);
+  background: #492540;
   border-radius: 14px 14px 0 14px;
+  box-shadow: var(--register_btn_shadow);
 }
 .message-dlt {
   display: flex;
@@ -1112,9 +1132,10 @@ img.conversation-dlt:hover {
 }
 
 .other-message .message-text {
-  background: var(--blue);
-  color: #111;
+  color: var(--light);
   border-radius: 14px 14px 14px 0;
+  background: #1e6262;
+  box-shadow: var(--field_shadow);
 }
 
 #chat-form {
@@ -1155,7 +1176,7 @@ img.conversation-dlt:hover {
 }
 
 /* inbox related responsive styles */
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 1000px) {
   #chat-container {
     min-width: 70%;
     height: calc(100vh - 6rem);
@@ -1179,10 +1200,16 @@ img.conversation-dlt:hover {
     width: 16rem;
     padding-right: 0px;
   }
+  .message-content {
+    max-width: 48rem;
+  }
 }
 @media only screen and (max-width: 750px) {
   html {
     font-size: 55.5%;
+  }
+  .message-content {
+    max-width: 35rem;
   }
 }
 
