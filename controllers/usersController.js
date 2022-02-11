@@ -67,7 +67,7 @@ async function addUser(req, res, next) {
     res.status(500).json({
       errors: {
         common: {
-          msg: "Couldn't updated user!",
+          msg: "Couldn't add user!",
         },
       },
     });
@@ -76,7 +76,7 @@ async function addUser(req, res, next) {
 
 // update user
 // this function is not checked whether it works or not
-async function addUser(req, res, next) {
+async function updateUser(req, res, next) {
   const saltRound = 10;
 
   // hashing password using bcrypt
@@ -125,7 +125,7 @@ async function addUser(req, res, next) {
     res.status(500).json({
       errors: {
         common: {
-          msg: "Couldn't updated user!",
+          msg: "Couldn't update user!",
         },
       },
     });
@@ -184,4 +184,4 @@ async function changeUserRole(req, res, next) {
 }
 
 // exports functions
-module.exports = { getUsers, addUser, removeUser, changeUserRole };
+module.exports = { getUsers, addUser, updateUser, removeUser, changeUserRole };

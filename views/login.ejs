@@ -15,13 +15,14 @@
           <input
             type="text"
             name="username"
+            class="text_field"
             placeholder="Enter mobile or email"
             value="<%= data.username %>"
           />
           <% if (errors.username) { %>
             <p class="error show"><%= errors.username.msg %></p>
           <% } %>
-          <input type="password" name="password" placeholder="Enter password" />
+          <input type="password" name="password" class="text_field" placeholder="Enter password" />
           <% if (errors.password) { %>
             <p class="error show"><%= errors.password.msg %></p>
           <% } %>
@@ -29,7 +30,20 @@
           <% if (errors.common) { %>
             <p class="error show"><%= errors.common.msg %></p>
           <% } %>
-          <input type="submit" value="Login" />
+          <div class="register_buttons">
+        <input
+          type="submit"
+          name="sub"
+          value="Login &#10148;"
+          class="btn_register"
+        />
+        <input
+          type="reset"
+          name="res"
+          value="Reset &#128502;"
+          class="btn_register res"
+        />
+      </div>
         </form>
       </div>
     </div>
