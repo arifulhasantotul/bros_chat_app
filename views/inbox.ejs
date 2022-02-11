@@ -13,6 +13,7 @@
             placeholder="name" 
             name="search_field" 
             id="search_field" 
+            class="text_field"
             autocomplete="off" 
           />
           <p id="conversation_search_error" class="error"></p>
@@ -72,7 +73,7 @@
       <!-- send message form -->
       <form id="chat-form" method="post" enctype="multipart/form-data">
         <label for="attachment">
-          <img src="./images/attachment.png" alt="Add Attachment" />
+          <img src="./images/attachment.svg" alt="Add Attachment" />
         </label>
         <input type="file" multiple name="attachment" class="hide" id="attachment" />
         <input type="text" name="message" placeholder="Type a message" autocomplete="off" />

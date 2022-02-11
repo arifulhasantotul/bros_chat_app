@@ -8,23 +8,20 @@
 <div class="modal-wrapper" id="add-conversation-modal">
   <div class="modal">
     <a onclick="closeModal()" class="modal-close">+</a>
-    <div class="modal-title">
-      <h2>Create New Conversation</h2>
-    </div>
-    <div class="modal-body">
+      <h2>Create Conversation</h2>
       <form id="add-conversation-form">
         <input
           type="text"
-          placeholder="search user by name or email or mobile"
+          placeholder="name or email or mobile"
           name="user"
           id="user"
+          class="text_field"
           autocomplete="off"
         />
         <p class="error"></p>
         <div class="search_users"></div>
-        <input type="submit" value="Submit" class="hide" />
+        <input type="submit" value="Submit" class="btn_register hide" />
       </form>
-    </div>
   </div>
 </div>
 <script>
@@ -71,7 +68,7 @@
     input.value = "";
   }
   function openModal() {
-    modal.style.display = "block";
+    modal.style.display = "grid";
   }
 
   //on keyup, start the countdown
