@@ -334,7 +334,6 @@
         if (result.length > 0) {
           let generateHTML = "<ul>";
           result.forEach((conversation)=>{
-            console.log(conversation);
             const creator = conversation.creator;
             const participant = conversation.participant;
             if(creator.name !== loggedinUserName) {

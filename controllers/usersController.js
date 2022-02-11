@@ -67,7 +67,65 @@ async function addUser(req, res, next) {
     res.status(500).json({
       errors: {
         common: {
-          msg: "Unknown error occurred",
+          msg: "Couldn't updated user!",
+        },
+      },
+    });
+  }
+}
+
+// update user
+// this function is not checked whether it works or not
+async function addUser(req, res, next) {
+  const saltRound = 10;
+
+  // hashing password using bcrypt
+  const hashedPassword = await hash(req.body.password, saltRound);
+  try {
+    let oldUser = await User.findById(req.params.id);
+    if (oldUser.avatar && oldUser.cloudinary_id) {
+      // delete image from cloudinary
+      await cloudinary.uploader.destroy(oldUser.cloudinary_id);
+    }
+    // checking avatar/files
+    if (req.files && req.files.length > 0) {
+      // setting cloudinary
+      const result = await cloudinary.uploader.upload(req.files[0].path, {
+        width: 200,
+        height: 200,
+        crop: "thumb",
+        gravity: "face",
+      });
+      const updateUser = {
+        name: req.body.name || oldUser.name,
+        email: req.body.email || oldUser.email,
+        mobile: req.body.mobile || oldUser.mobile,
+        password: hashedPassword || oldUser.password,
+        avatar: result.secure_url || oldUser.avatar,
+        cloudinary_id: result.public_id || oldUser.cloudinary_id,
+      };
+    } else {
+      const updateUser = {
+        name: req.body.name || oldUser.name,
+        email: req.body.email || oldUser.email,
+        mobile: req.body.mobile || oldUser.mobile,
+        password: hashedPassword || oldUser.password,
+      };
+    }
+
+    // save user
+    oldUser = await User.findByIdAndUpdate(req.params.id, updateUser, {
+      new: true,
+    });
+    res.status(200).json({
+      message: "User updated successfully!",
+    });
+  } catch (err) {
+    // send error
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Couldn't updated user!",
         },
       },
     });
@@ -77,17 +135,15 @@ async function addUser(req, res, next) {
 // remove user
 async function removeUser(req, res, next) {
   try {
-    const user = await User.findByIdAndDelete({ _id: req.params.id });
+    // find user by id
+    const user = await User.findById(req.params.id);
 
-    // check user avatar file
-    if (user.avatar) {
-      unlink(
-        path.join(__dirname, `/../public/uploads/avatars/${user.avatar}`),
-        (err) => {
-          if (err) console.log(err);
-        }
-      );
+    if (user.avatar && user.cloudinary_id) {
+      // delete image from cloudinary
+      await cloudinary.uploader.destroy(user.cloudinary_id);
     }
+    // delete user from db
+    await user.remove();
 
     res.status(200).json({
       message: "User removed Successfully!",
