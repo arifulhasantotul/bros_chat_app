@@ -61,7 +61,7 @@
 
       <p class="error common-error"></p>
 
-      <div class="register_buttons">
+      <div id="register_buttons" class="register_buttons">
         <input
           type="submit"
           name="sub"
@@ -74,6 +74,9 @@
           value="Reset &#128502;"
           class="btn_register res"
         />
+      </div>
+      <div id="register_loader" class="register_loader">
+        <div class="center"></div>
       </div>
     </form>
     <div class="preview_container" id="preview_container">
@@ -98,6 +101,10 @@
   const previewDefaultText = previewContainer.querySelector(
     ".image_preview_text"
   );
+  // loader or buttons
+  const registerButtonsContainer = document.getElementById("register_buttons");
+  const registerLoaderContainer = document.getElementById("register_loader");
+  
   
   // success toast
   const successAddUserToast = () => {
@@ -161,6 +168,8 @@
   // form submit handler
   form.onsubmit = async function (event) {
     event.preventDefault();
+    registerButtonsContainer.style.display = "none";
+    registerLoaderContainer.style.display = "block";
 
     // clear errors first
     const errorPlaceholders = document.querySelectorAll("p.error");
@@ -203,13 +212,18 @@
         modal.style.transform = "translateY(18rem)";
         previewContainer.style.top = "-13%";
       });
+      // loader or buttons
+      registerButtonsContainer.style.display = "block";
+      registerLoaderContainer.style.display = "none";
       failedAddUserToast();
     } else {
       // success
       successAddUserToast();
       closeModal();
       document.querySelector("p.error").style.display = "none";
-
+      // loader or buttons
+      registerButtonsContainer.style.display = "block";
+      registerLoaderContainer.style.display = "none";
       // reload the page after 1 second
       setTimeout(() => {
         location.reload();

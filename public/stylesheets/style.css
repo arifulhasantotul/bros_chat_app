@@ -149,10 +149,8 @@ input[type="submit"]:active {
   display: flex;
   align-items: center;
 }
-.sidebar .logo_details i {
-  font-size: 3rem;
-  color: var(--dark_green);
-  height: 5rem;
+.sidebar .logo_details img {
+  height: 4rem;
   min-width: 7.8rem;
   text-align: center;
   line-height: 5rem;
@@ -501,12 +499,17 @@ input[type="submit"]:active {
   margin: 1rem 0;
 }
 
+#branding h2,
 .modal h2 {
   color: #4c4b71;
   text-align: center;
   margin: 4rem 0 3rem 0;
   letter-spacing: 0.1rem;
   font-size: 2.5rem;
+}
+
+#branding h2 {
+  margin: 0;
 }
 
 .modal-close {
@@ -1259,7 +1262,6 @@ img#conversation-partner-avatar {
 /* login related styles */
 #login-container {
   display: grid;
-  max-width: 1000%;
   width: 100%;
   height: calc(100vh - 6rem);
   background: var(--primary);
@@ -1274,7 +1276,8 @@ img#conversation-partner-avatar {
   background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 0rem 0rem 44rem 0rem;
+  border-radius: 0rem 0rem 38rem 0rem;
+  width: 100%;
 }
 
 #right-column {
@@ -1302,7 +1305,8 @@ img#conversation-partner-avatar {
 }
 
 #branding img {
-  width: 100px;
+  width: 18rem;
+  height: 18rem;
 }
 
 /* Form Section */
@@ -1313,7 +1317,7 @@ img#conversation-partner-avatar {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: 44rem 0rem 0rem 0rem;
+  border-radius: 38rem 0rem 0rem 0rem;
   overflow: hidden;
 }
 
@@ -1328,19 +1332,14 @@ img#conversation-partner-avatar {
 
 @media only screen and (max-width: 800px) {
   #login-container {
-    min-width: 90%;
-    grid-template-areas:
-      "branding"
-      "login-form";
+    width: 100%;
+    grid-template-areas: "right-column";
   }
   #left-column {
     display: none;
   }
-}
-
-@media only screen and (max-width: 600px) {
-  #login-container {
-    width: 100%;
+  #login-form {
+    border-radius: 0;
   }
 }
 
@@ -1465,5 +1464,29 @@ img#conversation-partner-avatar {
   #users-table thead th:last-of-type,
   #users-table tbody td:last-of-type {
     text-align: left;
+  }
+}
+
+/* button loader style */
+
+.register_loader {
+  width: 6rem;
+  margin: 3rem auto;
+  display: none;
+}
+.center {
+  width: 5rem;
+  height: 5rem;
+  border-right: 0.5rem solid var(--green);
+  border-radius: 50%;
+  position: relative;
+  animation: rot 1s linear infinite;
+}
+@keyframes rot {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
