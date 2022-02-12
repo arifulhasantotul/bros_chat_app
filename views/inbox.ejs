@@ -23,32 +23,38 @@
       </div>
       
       <div id="conversation-list">
+        <ul>
         <% data.forEach(function(conversation) { %>
           <!-- conversation creator is same to logged in user, so we need to show participant name and avatar -->
           <% if(conversation.creator.id == loggedInUser.userId) { %>
-            <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.participant.name %>', '<%= conversation.participant.avatar %>')">
-              <% if (conversation.participant.avatar) { %>
-              <img src="<%= conversation.participant.avatar %>" alt="<%= conversation.participant.name %>" />
-              <% } else { %>
-                <img src="./images/nophoto.png" />
-              <% } %>
-              <div class="title-text"><%= conversation.participant.name %></div>
-              <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
-              <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
-            </div>
+            <li>
+              <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.participant.name %>', '<%= conversation.participant.avatar %>')">
+                <% if (conversation.participant.avatar) { %>
+                <img src="<%= conversation.participant.avatar %>" alt="<%= conversation.participant.name %>" />
+                <% } else { %>
+                  <img src="./images/nophoto.png" />
+                <% } %>
+                <div class="title-text"><%= conversation.participant.name %></div>
+                <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
+                <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
+              </div>
+            </li>
           <% } else { %>
-            <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.creator.name %>', '<%= conversation.creator.avatar %>')">
-              <% if (conversation.creator.avatar) { %>
-              <img src="<%= conversation.creator.avatar %>" alt="<%= conversation.creator.name %>" />
-              <% } else { %>
-                <img src="./images/nophoto.png" />
-              <% } %>
-              <div class="title-text"><%= conversation.creator.name %></div>
-              <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
-              <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
-            </div>
+            <li>
+              <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.creator.name %>', '<%= conversation.creator.avatar %>')">
+                <% if (conversation.creator.avatar) { %>
+                <img src="<%= conversation.creator.avatar %>" alt="<%= conversation.creator.name %>" />
+                <% } else { %>
+                  <img src="./images/nophoto.png" />
+                <% } %>
+                <div class="title-text"><%= conversation.creator.name %></div>
+                <div class="conversation-date"><%= moment(conversation.last_updated).fromNow() %></div>
+                <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
+              </div>
+            </li>
           <% } %>
         <% }); %>
+        </ul>
         
         <!-- show no conversation placeholder image for 0 conversations -->
         <% if(data && data.length === 0) { %>
@@ -89,6 +95,8 @@
 
   <!-- header js -->
   <script src="./js/header.js"></script>
+  <!-- toggle selected -->
+  <script src="./js/toggleSelected.js"></script>
 
   <script>
 

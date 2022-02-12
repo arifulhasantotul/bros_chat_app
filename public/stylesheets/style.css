@@ -46,6 +46,7 @@ html {
   font-size: 62.5%;
   letter-spacing: 0.05rem;
   font-family: "Poppins", sans-serif;
+  list-style-type: none;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -929,24 +930,23 @@ input[type="submit"]:active {
   -moz-box-shadow: var(--field_hover_shadow);
 }
 
-.conversation.conversation_active,
-.conversation:hover {
-  background: var(--tertiary);
-  box-shadow: var(--field_shadow);
-  -webkit-box-shadow: var(--field_shadow);
-  -moz-box-shadow: var(--field_shadow);
-}
-
-.conversation:hover {
-  cursor: pointer;
-}
-
 .conversation img {
   grid-row: span 2;
   width: 40px;
   height: 40px;
   border-radius: 100%;
   border: 2px solid var(--blue);
+}
+
+.conversation:hover,
+.selected .conversation {
+  background: var(--tertiary);
+  box-shadow: var(--field_shadow);
+  -webkit-box-shadow: var(--field_shadow);
+  -moz-box-shadow: var(--field_shadow);
+  border-right: 0.5rem solid var(--dark_green);
+  transition: all 0.4s ease;
+  cursor: pointer;
 }
 
 .title-text {
