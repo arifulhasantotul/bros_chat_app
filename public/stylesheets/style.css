@@ -10,11 +10,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
 
 :root {
-  /* --primary: #171c2a; */
   --primary: #262626;
-  /* --secondary: #11141f; */
   --secondary: #2b2b2b;
-  /* --tertiary: #1f222e; */
   --tertiary: #2e2e2e;
   --dark: #0e0e12;
   --green: #52d794;
@@ -1267,20 +1264,27 @@ img#conversation-partner-avatar {
   height: calc(100vh - 6rem);
   background: var(--primary);
   border-radius: 10px;
-  grid-template-areas:
-    "left-column branding"
-    "left-column login-form";
+  grid-template-areas: "left-column right-column";
 }
 
 #left-column {
   grid-area: left-column;
   background-color: var(--tertiary);
-  background-image: url("../images/illustration.png");
-  background-size: 52%;
+  background-image: url("../images/text_illustration.svg");
+  background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-radius: 0rem 0rem 44rem 0rem;
+}
+
+#right-column {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: var(--tertiary);
+  width: 100%;
+  height: calc(100vh - 6rem);
+  grid-area: right-column;
 }
 
 /* Branding Section */
@@ -1290,7 +1294,7 @@ img#conversation-partner-avatar {
   justify-content: flex-end;
   align-items: center;
   gap: 20px;
-  grid-area: branding;
+  background: var(--primary);
 }
 
 #branding h1 {
@@ -1304,34 +1308,39 @@ img#conversation-partner-avatar {
 /* Form Section */
 #login-form {
   padding: 2rem;
-  grid-area: login-form;
+  background: var(--primary);
+  height: calc(100vh - 6rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 44rem 0rem 0rem 0rem;
+  overflow: hidden;
 }
 
 #login-form form {
   width: 80%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
   margin: 0 auto;
 }
 
-/* login related responsive styles */
 @media only screen and (max-width: 800px) {
   #login-container {
     min-width: 90%;
+    grid-template-areas:
+      "branding"
+      "login-form";
+  }
+  #left-column {
+    display: none;
   }
 }
 
 @media only screen and (max-width: 600px) {
   #login-container {
     width: 100%;
-    grid-template-areas:
-      "branding"
-      "login-form";
-  }
-
-  #left-column {
-    display: none;
   }
 }
 
