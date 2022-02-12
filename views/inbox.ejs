@@ -26,7 +26,7 @@
         <% data.forEach(function(conversation) { %>
           <!-- conversation creator is same to logged in user, so we need to show participant name and avatar -->
           <% if(conversation.creator.id == loggedInUser.userId) { %>
-            <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.participant.name %>')">
+            <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.participant.name %>', '<%= conversation.participant.avatar %>')">
               <% if (conversation.participant.avatar) { %>
               <img src="<%= conversation.participant.avatar %>" alt="<%= conversation.participant.name %>" />
               <% } else { %>
@@ -37,7 +37,7 @@
               <img class="conversation-dlt" src="./images/trash.svg" alt="Delete Conversation" onclick="deleteConversation('<%= conversation._id %>')" />
             </div>
           <% } else { %>
-            <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.creator.name %>')">
+            <div class="conversation" onclick="getMessages('<%= conversation._id %>', '<%= conversation.creator.name %>', '<%= conversation.creator.avatar %>')">
               <% if (conversation.creator.avatar) { %>
               <img src="<%= conversation.creator.avatar %>" alt="<%= conversation.creator.name %>" />
               <% } else { %>
@@ -62,6 +62,7 @@
 
       <!-- conversation name -->
       <div id="chat-title">
+        <img src="" alt="" id="conversation-partner-avatar" />
         <span id="conversation-partner"></span>
       </div>
 
@@ -94,6 +95,7 @@
     const form = document.querySelector('#chat-form');
     const messageContainer = document.querySelector('#chat-message-list');
     const chatTitleContainer = document.querySelector('#conversation-partner');
+    const chatAvatarContainer = document.querySelector('#conversation-partner-avatar');
     const loggedinUserId = '<%= loggedInUser.userId %>';
     const loggedinUserName = '<%= loggedInUser.username %>';
     let participant = null; // selected conversation participant object
@@ -208,7 +210,7 @@
     });
 
     // get messages of a conversation
-    async function getMessages(conversation_id, current_conversation_name){
+    async function getMessages(conversation_id, current_conversation_name, current_conversation_avatar){
       let response = await fetch(`/inbox/messages/${conversation_id}`);
       const result= await response.json();
 
@@ -266,7 +268,12 @@
             } else if(data.messages.length === 0) {
               messageContainer.innerHTML = '<div class="message-row"></div>';
             }
-
+            chatAvatarContainer.style.display = 'block';
+            if(current_conversation_avatar && current_conversation_avatar.length > 0){
+              chatAvatarContainer.setAttribute('src', `${current_conversation_avatar}`);
+            } else {
+              chatAvatarContainer.setAttribute('src', `./images/nophoto.png`);
+            }
             chatTitleContainer.textContent = current_conversation_name;
             conversations_placeholder.style.display = "none";
           }
