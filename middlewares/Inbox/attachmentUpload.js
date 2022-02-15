@@ -6,7 +6,7 @@ function attachmentUpload(req, res, next) {
     "attachments",
     ["image/jpeg", "image/jpg", "image/png"],
     1000000,
-    2,
+    10,
     "Only .jpeg, .jpg or .png format allowed!"
   );
 

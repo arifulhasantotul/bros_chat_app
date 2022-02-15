@@ -1019,8 +1019,8 @@ img.conversation-dlt:hover {
   -moz-box-shadow: var(--hover_btn_shadow);
 }
 
-#chat-title,
 #chat-form {
+  position: relative;
   background: var(--tertiary);
 }
 
@@ -1030,6 +1030,7 @@ img.conversation-dlt:hover {
   grid-area: chat-title;
   color: #ffffff;
   font-weight: bold;
+  background: var(--tertiary);
   font-size: 2rem;
   border-radius: 0 10px 0 0;
   padding: 0 20px;
@@ -1038,6 +1039,75 @@ img.conversation-dlt:hover {
 #chat-title > img {
   cursor: pointer;
   height: 30px;
+}
+
+.attachments_preview_container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: 14rem;
+  bottom: 8rem;
+  padding: 2rem;
+  box-shadow: var(--out_shadow);
+  -webkit-box-shadow: var(--out_shadow);
+  -moz-box-shadow: var(--out_shadow);
+  background: linear-gradient(315deg, #222222, #292929);
+  overflow-x: hidden;
+  display: none;
+}
+
+.attachments_preview_container:hover {
+  box-shadow: var(--field_hover_shadow);
+  -webkit-box-shadow: var(--field_hover_shadow);
+  -moz-box-shadow: var(--field_hover_shadow);
+}
+
+.attachment_figure_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100%;
+  margin-bottom: 4rem;
+}
+figure {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  margin: 1rem;
+}
+figure img {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  padding: 0.5rem;
+  cursor: grab;
+}
+figure figcaption {
+  color: #fff;
+  text-align: center;
+}
+.close_preview_attachment {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  color: #eb5758;
+  padding: 0rem 0.7rem;
+  border-radius: 50%;
+  background: #fff;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.attachments_preview_text {
+  font-size: 1.5rem;
+  color: #4a8383;
+}
+.attachments_preview_text.warn {
+  color: #eb5758;
 }
 
 img#conversation-partner-avatar {
@@ -1080,6 +1150,10 @@ img#conversation-partner-avatar {
 }
 .message-content .attachments img {
   width: 10rem;
+  border-radius: 2px;
+  box-shadow: var(--register_btn_shadow);
+  padding: 0.5rem;
+  background: var(--primary);
 }
 
 .you-message {
@@ -1110,11 +1184,6 @@ img#conversation-partner-avatar {
 .other-message .message-content .first_content,
 .other-message .message-content .third_content {
   justify-content: start;
-}
-
-.message-row img:first-of-type {
-  border-radius: 100%;
-  grid-row: span 2;
 }
 
 .message-text {

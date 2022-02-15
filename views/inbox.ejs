@@ -82,8 +82,32 @@
         <label for="attachment">
           <img src="./images/attachment.svg" alt="Add Attachment" />
         </label>
-        <input type="file" multiple name="attachment" class="hide" id="attachment" />
+        <input
+          type="file"
+          multiple
+          name="attachment"
+          class="hide"
+          id="attachment"
+          onchange="selected_attachments()"
+        />
         <input type="text" name="message" placeholder="Type a message" autocomplete="off" />
+        <!-- attachment preview container -->
+        <div
+          class="attachments_preview_container"
+          id="attachments_preview_container"
+        >
+          <span id="total_files" class="attachments_preview_text">Selected attachments </span>
+          <!-- attachment figure container start -->
+          <div
+            id="attachment_figure_container"
+            class="attachment_figure_container"
+          >
+            <!-- attachments image will show here -->
+          </div>
+          <!-- attachment figure container end -->
+          <span class="attachments_preview_text warn">Maximum 10 files</span>
+          <span onclick="close_attachments_preview()" class="close_preview_attachment">&#128502;</span>
+        </div>
       </form>
 
     </div>
@@ -115,6 +139,17 @@
     const search_field = document.querySelector("input#search_field");
     let conversations_placeholder = document.querySelector(".search_conversation");
 
+    // attachment Preview Container
+    const attachmentPreviewContainer = document.getElementById('attachments_preview_container');
+    // attachments preview
+    const attachment_field = document.getElementById("attachment");
+    // attachment image container
+    const attachmentImageContainer = document.getElementById(
+      "attachment_figure_container"
+    );
+    // total file numbers
+    const totalSelectFile = document.getElementById("total_files");
+
     // delete success toast
     const successDeleteToast = (topic) => {
       Swal.fire({
@@ -131,7 +166,7 @@
     }
 
     // delete cancel toast 
-    const cancelDeleteToast = () =>{
+    const cancelDeleteToast = () => {
       Swal.fire({
         toast: true,
         position: "top-end",
@@ -145,7 +180,7 @@
     }
 
     // delete failed toast
-    const failedToast = (text) =>{
+    const failedToast = (text) => {
       Swal.fire({
         toast: true,
         position: "top-end",
@@ -309,12 +344,42 @@
 
       // get response
       let result = await response.json();
+      console.log(result);
 
       if (!result.errors) {
+        attachmentPreviewContainer.style.display = "none";
         form.reset(); // reset the form
       } else {
+        attachmentPreviewContainer.style.display = "none";
         failedToast("Error sending messages!");
       }
+    }
+
+    function selected_attachments(){
+      attachmentPreviewContainer.style.display="flex";
+      attachmentImageContainer.innerHTML = "";
+        totalSelectFile.textContent = `${attachment_field.files.length} Files Selected`;
+
+        for (const file of attachment_field.files) {
+          console.log(attachment_field);
+          let reader = new FileReader();
+          let figure = document.createElement("figure");
+          let figCap = document.createElement("figcaption");
+          figCap.innerText = file.name;
+          figure.appendChild(figCap);
+          reader.onload = () => {
+            let image = document.createElement("img");
+            image.setAttribute("src", reader.result);
+            figure.insertBefore(image, figCap);
+          };
+          attachmentImageContainer.appendChild(figure);
+          reader.readAsDataURL(file);
+        }
+    }
+
+    function close_attachments_preview(){
+      attachmentPreviewContainer.style.display=null;
+      attachmentImageContainer.innerHTML=null;
     }
 
     // on keyup, start the countdown
@@ -466,6 +531,7 @@
       });
     }
     
+
   </script>
     
   </body>
