@@ -8,8 +8,6 @@
 
 // external imports
 const createError = require("http-errors");
-const fs = require("fs");
-const path = require("path");
 
 // internal imports
 const User = require("../models/People");
@@ -156,9 +154,6 @@ async function addConversation(req, res, next) {
       });
 
       const result = await newConversation.save();
-      // res.status(200).json({
-      //   message: "Conversation was added successfully!",
-      // });
     } else {
       throw createError("Conversation already exists!");
     }
@@ -225,7 +220,6 @@ async function sendMessage(req, res, next) {
 
         for (const file of req.files) {
           const { path } = file;
-          console.log("path", path);
           const newPath = await multipleUpload(path);
           attachments.push({
             attachment_file: newPath.secure_url,
@@ -267,7 +261,6 @@ async function sendMessage(req, res, next) {
         },
       });
 
-      console.log(result);
       res.status(200).json({
         message: "Successful!",
         data: result,
@@ -293,20 +286,18 @@ async function sendMessage(req, res, next) {
 // remove attachments
 async function removeMsgAndAttachments(req, res, next) {
   try {
-    const message = await Message.findByIdAndDelete({ _id: req.params.id });
-
+    const message = await Message.findById(req.params.id);
+    const multipleDelete = async (public_id) =>
+      await cloudinary.uploader.destroy(public_id);
     // check attachment file
     if (message.attachment) {
       const attachments = message.attachment;
-      attachments.forEach((attachment) => {
-        fs.unlink(
-          path.join(__dirname, `/../public/uploads/attachments/${attachment}`),
-          (err) => {
-            if (err) console.log(err);
-          }
-        );
-      });
+      for (const attachment of attachments) {
+        await multipleDelete(attachment.cloudinary_id);
+      }
     }
+
+    await message.remove();
 
     res.status(200).json({
       message: "Message removed Successfully!",
