@@ -8,8 +8,6 @@
 
 // external imports
 const { hash } = require("bcrypt");
-const { unlink } = require("fs");
-const path = require("path");
 const cloudinary = require("../config/cloudinary");
 
 // internal imports

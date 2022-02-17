@@ -1,43 +1,17 @@
 // external imports
 const multer = require("multer");
-const path = require("path");
 const createError = require("http-errors");
+const accountStorage = require("../config/cloudniaryAccountStorage");
 
 const multipleUploader = (
-  subfolder_name,
   allowed_file_types,
   max_file_size,
   max_number_of_upload_files,
   error_msg
 ) => {
-  // setting file store folder
-  const UPLOAD_FOLDER = `${__dirname}/../public/uploads/${subfolder_name}/`;
-
-  // taking full control of storing file in disk by using diskStorage
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, UPLOAD_FOLDER);
-    },
-    filename: (req, file, cb) => {
-      const fileExt = path.extname(file.originalname);
-
-      // generating unique filename
-      const fileName =
-        file.originalname
-          .replace(fileExt, "")
-          .toLowerCase()
-          .split(" ")
-          .join("-") +
-        "-" +
-        Date.now();
-
-      cb(null, fileName + fileExt);
-    },
-  });
-
   // prepare final multer upload object
   const upload = multer({
-    storage: storage,
+    storage: accountStorage,
     limits: {
       fileSize: max_file_size,
     },

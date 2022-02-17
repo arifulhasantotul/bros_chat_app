@@ -9,7 +9,8 @@ const messageSchema = mongoose.Schema(
     },
     attachment: [
       {
-        type: String,
+        attachment_file: String,
+        cloudinary_id: String,
       },
     ],
     sender: {

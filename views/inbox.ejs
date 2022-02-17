@@ -213,7 +213,7 @@
 
         if(data.message.attachment && data.message.attachment.length > 0) {
           data.message.attachment.forEach(attachment => {
-            attachments += `<img src="./uploads/attachments/${attachment}" /> `;
+            attachments += `<img src=${attachment.attachment_file} /> `;
           });
         }
 
@@ -281,7 +281,7 @@
 
                 if(message.attachment && message.attachment.length > 0) {
                   message.attachment.forEach(attachment => {
-                    attachments += `<img src="./uploads/attachments/${attachment}" /> `;
+                    attachments += `<img src=${attachment.attachment_file} /> `;
                   });
                 }
 
